@@ -52,10 +52,6 @@ android {
         buildConfigField "String", "WEIBO_SECRET", localProperties["WEIBO_SECRET"]
         buildConfigField "String", "WEIBO_REDIRECT_URL", localProperties["WEIBO_REDIRECT_URL"]
         buildConfigField "String", "WEIBO_SCOPE", localProperties["WEIBO_SCOPE"]
-
-        ndk {
-            abiFilters 'armeabi' //, 'armeabi-v7a','arm64-v8a'
-        }
     }
 
     buildTypes {

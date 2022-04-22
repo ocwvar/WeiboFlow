@@ -1,6 +1,5 @@
 package com.ocwvar.weibo_flow
 
-import android.os.Bundle
 import com.ocwvar.weibo_flow.json.Converter
 import com.ocwvar.weibo_flow.json.Keys
 import com.ocwvar.weibo_flow.weibo.WBApi
@@ -71,7 +70,7 @@ class MainActivity: FlutterActivity(), MethodChannel.MethodCallHandler {
                     }
 
                     result.error(
-                        null,
+                        "0",
                         this.converter.toObject(
                             Pair(Keys.Error.KEY_STRING_MSG, errorMessage ?: ""),
                             Pair(Keys.Error.KEY_STRING_CODE, errorCode.toString()),
