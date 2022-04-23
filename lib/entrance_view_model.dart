@@ -9,7 +9,7 @@ class EntranceViewModel extends ChangeNotifier {
   
   // the bridge to native level
   final NativeBridge _nativeBridge = NativeBridge();
-  
+
   // status model that have all sdk info
   SdkStatusModel? _status;
   SdkStatusModel? get status => _status;
@@ -17,6 +17,42 @@ class EntranceViewModel extends ChangeNotifier {
   // flag of result [initSDK]
   // if this is true, means we should just call [_authSDK]
   bool _wasInitSucceed = false;
+
+  // theme brightness mode
+  late ThemeMode _themeMode;
+  ThemeMode get themeMode => _themeMode;
+
+  // light theme
+  late ThemeData _lightTheme;
+  ThemeData get lightTheme => _lightTheme;
+
+  // dark theme
+  late ThemeData _darkTheme;
+  ThemeData get darkTheme => _darkTheme;
+
+  /// init theme with given [baseColor]
+  /// should call this function before setting the Theme
+  void setThemeFromColorOf({required Color baseColor, bool update = true}) {
+    final ThemeData lightTheme = ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: baseColor, brightness: Brightness.light),
+        useMaterial3: true,
+        brightness: Brightness.light
+    );
+
+    final ThemeData darkTheme = ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: baseColor, brightness: Brightness.dark,),
+        useMaterial3: true,
+        brightness: Brightness.dark
+    );
+
+    _themeMode = ThemeMode.system;
+    _lightTheme = lightTheme;
+    _darkTheme = darkTheme;
+
+    if (update) {
+      notifyListeners();
+    }
+  }
 
   /// init weibo sdk
   /// if success, will call [_authSDK] or will update [_status] with error
