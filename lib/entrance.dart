@@ -15,8 +15,8 @@ class AppEntrance extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EntranceViewModel(),
-      child: Consumer<EntranceViewModel>(
+      create: (context) => ThemeViewModel(),
+      child: Consumer<ThemeViewModel>(
         builder: (context, viewModel, child) {
           viewModel.setThemeFromColorOf(baseColor: Colors.lightBlueAccent, update: false);
           return MaterialApp(
@@ -24,7 +24,7 @@ class AppEntrance extends StatelessWidget {
             themeMode: viewModel.themeMode,
             theme: viewModel.lightTheme,
             darkTheme: viewModel.darkTheme,
-            home: WelcomePage(entranceViewModel: viewModel,),
+            home: WelcomePage(themeViewModel: viewModel,),
           );
         },
       ),
