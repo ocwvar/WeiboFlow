@@ -18,11 +18,24 @@ class Converter {
         )
     }
 
-    fun toTokenObject(accessToken: String, refreshToken: String, uid: String): String {
+    /**
+     * get json string of token model
+     */
+    fun toTokenObject(
+        accessToken: String,
+        refreshToken: String,
+        uid: String,
+        redirectUrl: String,
+        expireTime: String,
+        generateTime: String
+    ): String {
         return this.toObject(
             Pair(Keys.Json.KEY_STRING_TOKEN_ACCESS, accessToken),
             Pair(Keys.Json.KEY_STRING_TOKEN_REFRESH, refreshToken),
             Pair(Keys.Json.KEY_STRING_UID, uid),
+            Pair(Keys.Json.KEY_STRING_REDIRECT_URL, redirectUrl),
+            Pair(Keys.Json.KEY_STRING_EXPIRE_TIME, expireTime),
+            Pair(Keys.Json.KEY_STRING_GENERATE_TIME, generateTime),
         )
     }
 

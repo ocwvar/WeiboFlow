@@ -59,12 +59,16 @@ class MainActivity: FlutterActivity(), MethodChannel.MethodCallHandler {
 
             // auth by user
             METHOD_AUTH_SDK -> {
+                val requestTime: String =System.currentTimeMillis().toString()
                 WBApi.authWEBApi(this) { success: Boolean, isCanceled: Boolean, errorMessage: String?, errorCode: Int->
                     if (success) {
                         result.success(this.converter.toTokenObject(
                             accessToken = WBApi.Status.tokenOfAccess,
                             refreshToken = WBApi.Status.tokenOfRefresh,
-                            uid = WBApi.Status.uid
+                            uid = WBApi.Status.uid,
+                            redirectUrl = BuildConfig.WEIBO_REDIRECT_URL,
+                            expireTime = WBApi.Status.expireTime,
+                            generateTime = requestTime
                         ));
                         return@authWEBApi
                     }
