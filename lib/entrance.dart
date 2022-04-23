@@ -14,18 +14,20 @@ class AppEntrance extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (context) => EntranceViewModel(),
+      child: Consumer<EntranceViewModel>(
+        builder: (context, viewModel, child) {
+          viewModel.setThemeFromColorOf(baseColor: Colors.lightBlueAccent, update: false);
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: viewModel.themeMode,
+            theme: viewModel.lightTheme,
+            darkTheme: viewModel.darkTheme,
+            home: WelcomePage(entranceViewModel: viewModel,),
+          );
+        },
       ),
-      home: ChangeNotifierProvider(
-        create: (context) => EntranceViewModel(),
-        child: Consumer<EntranceViewModel>(
-          builder: (context, viewModel, child) {
-            return WelcomePage(entranceViewModel: viewModel);
-          },
-        ),
-      )
     );
   }
 }
