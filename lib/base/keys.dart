@@ -10,4 +10,7 @@ class Keys {
   static const String keyStringExpireTime = "KEY_STRING_EXPIRE_TIME";
   static const String keyStringGenerateTime = "KEY_STRING_GENERATE_TIME";
   static const String keyBoolIsCancelByUser = "KEY_BOOL_IS_CANCELED";
+
+  static const String keyRequestTokenAccess = "access_token";
+  static const String keyRequestCount = "count";
 }

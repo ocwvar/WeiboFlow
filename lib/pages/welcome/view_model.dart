@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:weibo_flow/base/keys.dart';
-import 'package:weibo_flow/base/token_checker.dart';
 import 'package:weibo_flow/data_singleton.dart';
 
+import '../../base/base_view_model.dart';
 import '../../base/log.dart';
 import '../../base/native_bridge.dart';
 
@@ -77,6 +77,7 @@ class WelcomeViewModel extends BaseViewModel {
   /// on everything was succeed
   void _onEveryThingSucceed() {
     Logger.self.d(tag, "_onEveryThingSucceed");
+    DataSingleton.self.initRequestClient();
     _good2Go = true;
     _errorOnInit = false;
     _errorOnAuth = false;

@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:weibo_flow/base/keys.dart';
 
 class NativeBridge {
-  final MethodChannel _platform = MethodChannel(Keys.channel);
+  final MethodChannel _platform = const MethodChannel(Keys.channel);
 
   Future<void> initSDK() async {
     final void result = await _platform.invokeMethod(Keys.methodInitSDK);
