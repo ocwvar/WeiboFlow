@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:weibo_flow/entrance_view_model.dart';
+import 'package:weibo_flow/pages/home/view.dart';
 import 'package:weibo_flow/pages/welcome/view_model.dart';
 import 'package:weibo_flow/widget/blur.dart';
 import 'package:weibo_flow/widget/page.dart';
+
+import '../../generated/l10n.dart';
 
 /// this is first page that user can see after open up application
 /// we should init sdk here, and when all things settled down, we
@@ -24,25 +27,24 @@ class _WelcomePageState extends State<WelcomePage> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      // we begin to init everything just after ui built up
-      if (!viewModel.initCalled) {
-        viewModel.initEveryThing();
-        return;
-      }
-
-      // if all good to go, we should move to next page
-      if (viewModel.good2Go) {
-        _enterHomePage();
-        return;
-      }
-    });
-
-    return ThemedPage(
+    return ThemedPage.withoutAppBar(
       child: ChangeNotifierProvider(
         create: (context) => viewModel,
         child: Consumer<WelcomeViewModel>(
           builder: (context, viewModel, child) {
+            WidgetsBinding.instance?.addPostFrameCallback((_) {
+              // we begin to init everything just after ui built up
+              if (!viewModel.initCalled) {
+                viewModel.initEveryThing();
+                return;
+              }
+
+              if (viewModel.good2Go) {
+                Future.delayed(const Duration(seconds: 2)).then((_) => _enterHomePage());
+                return;
+              }
+            });
+
             return Stack(
               alignment: Alignment.center,
               children: [
@@ -97,24 +99,27 @@ class _WelcomePageState extends State<WelcomePage> {
 
   /// get display status text on current viewModel status
   String _getDisplayStatusText(WelcomeViewModel viewModel) {
-    if (viewModel.good2Go) {
-      return "Here we go";
-    }
-
     if (viewModel.hasErrorOnAuth) {
-      return "User authorization failed";
+      return S.of(context).welcomeStatusErrorOnAuth;
     }
 
     if (viewModel.hasErrorOnInit) {
-      return "Weibo SDK initialization failed";
+      return S.of(context).welcomeStatusErrorOnInit;
     }
 
-    return "Starting up...";
+    return S.of(context).welcomeStatusStarting;
   }
 
   /// enter home page
   void _enterHomePage() {
-    print('');
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage(
+                themeViewModel: widget.themeViewModel
+            )
+        )
+    );
   }
 
 }
