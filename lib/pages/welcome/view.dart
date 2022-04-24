@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:weibo_flow/entrance_view_model.dart';
+import 'package:weibo_flow/pages/home/view.dart';
 import 'package:weibo_flow/pages/welcome/view_model.dart';
 import 'package:weibo_flow/widget/blur.dart';
 import 'package:weibo_flow/widget/page.dart';
+
+import '../../generated/l10n.dart';
 
 /// this is first page that user can see after open up application
 /// we should init sdk here, and when all things settled down, we
@@ -24,60 +27,67 @@ class _WelcomePageState extends State<WelcomePage> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      // we begin to init everything just after ui built up
-      if (!viewModel.initCalled) {
-        viewModel.initEveryThing();
-        return;
-      }
-
-      // if all good to go, we should move to next page
-      if (viewModel.good2Go) {
-        _enterHomePage();
-        return;
-      }
-    });
-
-    return ThemedPage(
+    return ThemedPage.withoutAppBar(
       child: ChangeNotifierProvider(
         create: (context) => viewModel,
         child: Consumer<WelcomeViewModel>(
           builder: (context, viewModel, child) {
+            WidgetsBinding.instance?.addPostFrameCallback((_) {
+              // we begin to init everything just after ui built up
+              if (!viewModel.initCalled) {
+                viewModel.initEveryThing();
+                return;
+              }
+
+              if (viewModel.good2Go) {
+                Future.delayed(const Duration(seconds: 2)).then((_) => _enterHomePage());
+                return;
+              }
+            });
+
             return Stack(
+              alignment: Alignment.center,
               children: [
                 SvgPicture.asset(
                   "assets/bg/main_bg.svg",
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
                   fit: BoxFit.contain,
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Icon(
-                          Icons.alternate_email_sharp,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 200.0,
+                BlurBox(
+                  cornerRoundedValue: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 30,),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Image.asset(
+                              "assets/imgs/cat.png",
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 30,),
-                    BlurBox(
-                        padding: const EdgeInsets.all(12),
-                        blurValue: 3,
-                        //backgroundColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
-                        backgroundColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.6),
-                        cornerRoundedValue: 12,
-                        child: Text(
-                          _getDisplayStatusText(viewModel),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        )
-                    )
-                  ],
+                      Text("Weibo@Flow", style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w300
+                      )),
+                      const SizedBox(height: 30,),
+                      Text(
+                        _getDisplayStatusText(viewModel),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 30,),
+                    ],
+                  ),
                 )
               ],
             );
@@ -89,24 +99,27 @@ class _WelcomePageState extends State<WelcomePage> {
 
   /// get display status text on current viewModel status
   String _getDisplayStatusText(WelcomeViewModel viewModel) {
-    if (viewModel.good2Go) {
-      return "Here we go";
-    }
-
     if (viewModel.hasErrorOnAuth) {
-      return "User authorization failed";
+      return S.of(context).welcomeStatusErrorOnAuth;
     }
 
     if (viewModel.hasErrorOnInit) {
-      return "Weibo SDK initialization failed";
+      return S.of(context).welcomeStatusErrorOnInit;
     }
 
-    return "Starting up...";
+    return S.of(context).welcomeStatusStarting;
   }
 
   /// enter home page
   void _enterHomePage() {
-    print('');
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage(
+                themeViewModel: widget.themeViewModel
+            )
+        )
+    );
   }
 
 }

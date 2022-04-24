@@ -1,0 +1,5 @@
+{
+  "welcomeStatusErrorOnAuth": "User authorization failed",
+  "welcomeStatusErrorOnInit": "Weibo SDK initialization failed",
+  "welcomeStatusStarting": "Starting up application..."
+}
