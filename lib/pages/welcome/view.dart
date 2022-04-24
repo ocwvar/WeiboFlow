@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:weibo_flow/entrance_view_model.dart';
 import 'package:weibo_flow/pages/home/view.dart';
 import 'package:weibo_flow/pages/welcome/view_model.dart';
 import 'package:weibo_flow/widget/blur.dart';
 import 'package:weibo_flow/widget/page.dart';
 
 import '../../generated/l10n.dart';
+import '../../theme_view_model.dart';
 
 /// this is first page that user can see after open up application
 /// we should init sdk here, and when all things settled down, we
@@ -45,51 +44,50 @@ class _WelcomePageState extends State<WelcomePage> {
               }
             });
 
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                SvgPicture.asset(
-                  "assets/bg/main_bg.svg",
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
-                  fit: BoxFit.contain,
-                ),
-                BlurBox(
-                  cornerRoundedValue: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 30,),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0),
-                          child: SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: Image.asset(
-                              "assets/imgs/cat.png",
-                              color: Theme.of(context).colorScheme.primary,
+            return SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  BlurBox(
+                    cornerRoundedValue: 0,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 30,),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(0),
+                            child: SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: Image.asset(
+                                "assets/imgs/cat.png",
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Text("Weibo@Flow", style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w300
-                      )),
-                      const SizedBox(height: 30,),
-                      Text(
-                        _getDisplayStatusText(viewModel),
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      const SizedBox(height: 30,),
-                    ],
-                  ),
-                )
-              ],
+                        Text("Weibo@Flow", style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w300
+                        )),
+                        const SizedBox(height: 30,),
+                        Text(
+                          _getDisplayStatusText(viewModel),
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        const SizedBox(height: 30,),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             );
           },
         ),

@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:weibo_flow/model/picture.dart';
 import 'package:weibo_flow/model/user.dart';
 
@@ -22,11 +23,18 @@ class ModelConvert {
   }
 
   static Content toContent(LinkedHashMap<String, dynamic> item) {
+    /// Sun Apr 24 14:07:36 +0800 2022
+    String _convertDataString(String raw) {
+      final String temp = raw.replaceAll(RegExp("\\+[0-9]{4} "), "");
+      final DateTime dateTime = DateFormat("EEE MMM dd HH:mm:ss yyyy").parse(temp);
+      return DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime);
+    }
+
     return Content(
         id: item["idstr"],
         fromUser: toUser(item["user"]),
         textContent: item["text"],
-        createTime: item["created_at"],
+        createTime: _convertDataString(item["created_at"]),
         pictures: toPictures(item["pic_urls"]),
         isRetweetedContent: false,
         retweetedContent: null

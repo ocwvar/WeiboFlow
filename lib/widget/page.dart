@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ThemedPage extends StatelessWidget {
 
   final Widget child;
-  AppBar? appBar;
+  PreferredSize? appBar;
 
   ThemedPage({
     Key? key,
@@ -19,10 +20,28 @@ class ThemedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      extendBodyBehindAppBar: true,
+      backgroundColor: _getBackgroundColor(context),
       appBar: appBar,
-      body: child,
+      body: Stack(
+        children: [
+          SvgPicture.asset(
+            "assets/bg/main_bg.svg",
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
+            fit: BoxFit.contain,
+          ),
+          child
+        ],
+      ),
     );
+  }
+
+  Color _getBackgroundColor(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      return Theme.of(context).colorScheme.background;
+    } else {
+      return Theme.of(context).colorScheme.secondaryContainer;
+    }
   }
 
 }

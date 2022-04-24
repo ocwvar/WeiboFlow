@@ -10,6 +10,8 @@ class Keys {
   static const String keyStringExpireTime = "KEY_STRING_EXPIRE_TIME";
   static const String keyStringGenerateTime = "KEY_STRING_GENERATE_TIME";
   static const String keyBoolIsCancelByUser = "KEY_BOOL_IS_CANCELED";
+  static const String keyIntThemeMode = "KEY_INT_THEME_MODE";
+  static const String keyIntThemeBaseColor = "KEY_INT_THEME_BASE_COLOR";
 
   static const String keyRequestTokenAccess = "access_token";
   static const String keyRequestCount = "count";

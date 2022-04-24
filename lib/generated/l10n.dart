@@ -79,6 +79,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Weibo@Flow`
+  String get homeTitle {
+    return Intl.message(
+      'Weibo@Flow',
+      name: 'homeTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
