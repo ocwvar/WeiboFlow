@@ -16,5 +16,4 @@ object Keys {
         const val KEY_BOOL_IS_CANCELED: String = "KEY_BOOL_IS_CANCELED"
     }
 
-    const val SP_FILE_NAME = "cache_token";
 }

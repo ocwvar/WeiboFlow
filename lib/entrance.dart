@@ -18,7 +18,7 @@ class AppEntrance extends StatelessWidget {
       create: (context) => ThemeViewModel(),
       child: Consumer<ThemeViewModel>(
         builder: (context, viewModel, child) {
-          viewModel.setThemeFromColorOf(baseColor: Colors.lightBlueAccent, update: false);
+          viewModel.setThemeFromColorOf(baseColor: Colors.redAccent, update: false);
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             themeMode: viewModel.themeMode,

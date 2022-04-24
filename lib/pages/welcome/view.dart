@@ -44,40 +44,48 @@ class _WelcomePageState extends State<WelcomePage> {
         child: Consumer<WelcomeViewModel>(
           builder: (context, viewModel, child) {
             return Stack(
+              alignment: Alignment.center,
               children: [
                 SvgPicture.asset(
                   "assets/bg/main_bg.svg",
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
                   fit: BoxFit.contain,
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Icon(
-                          Icons.alternate_email_sharp,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 200.0,
+                BlurBox(
+                  cornerRoundedValue: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 30,),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Image.asset(
+                              "assets/imgs/cat.png",
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 30,),
-                    BlurBox(
-                        padding: const EdgeInsets.all(12),
-                        blurValue: 3,
-                        //backgroundColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
-                        backgroundColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.6),
-                        cornerRoundedValue: 12,
-                        child: Text(
-                          _getDisplayStatusText(viewModel),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        )
-                    )
-                  ],
+                      Text("Weibo@Flow", style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w300
+                      )),
+                      const SizedBox(height: 30,),
+                      Text(
+                        _getDisplayStatusText(viewModel),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 30,),
+                    ],
+                  ),
                 )
               ],
             );
