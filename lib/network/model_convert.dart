@@ -23,11 +23,23 @@ class ModelConvert {
   }
 
   static Content toContent(LinkedHashMap<String, dynamic> item) {
-    /// Sun Apr 24 14:07:36 +0800 2022
+    /// convert date string: Sun Apr 24 14:07:36 +0800 2022
+    /// to 2022-04-24 14:07:36
+    /// since DateFormat not supporting "Z (TimeZone)", we need to
+    /// ignore this here for now. But it should be always +0800 anyway...
     String _convertDataString(String raw) {
       final String temp = raw.replaceAll(RegExp("\\+[0-9]{4} "), "");
       final DateTime dateTime = DateFormat("EEE MMM dd HH:mm:ss yyyy").parse(temp);
-      return DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime);
+      return DateFormat("yyyy-MM-dd @HH:mm:ss").format(dateTime);
+    }
+
+    /// get retweet content if it have
+    Content? _getRetweetContent() {
+      if (!item.containsKey("retweeted_status")) {
+        return null;
+      }
+
+      return toContent(item["retweeted_status"]);
     }
 
     return Content(
@@ -36,15 +48,15 @@ class ModelConvert {
         textContent: item["text"],
         createTime: _convertDataString(item["created_at"]),
         pictures: toPictures(item["pic_urls"]),
-        isRetweetedContent: false,
-        retweetedContent: null
+        retweetedContent: _getRetweetContent()
     );
   }
 
   static List<Picture> toPictures(List<dynamic> pictureList) {
     final List<Picture> result = [];
     for (LinkedHashMap<String, dynamic> item in pictureList) {
-      result.add(Picture(item["thumbnail_pic"]));
+      final String orj480 =  (item["thumbnail_pic"] as String).replaceAll(RegExp("thumbnail"), "orj480");
+      result.add(Picture(orj480));
     }
     return result;
   }

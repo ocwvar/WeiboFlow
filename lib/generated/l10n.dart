@@ -89,6 +89,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Retweeted Weibo`
+  String get contentRetweetText {
+    return Intl.message(
+      'Retweeted Weibo',
+      name: 'contentRetweetText',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -7,7 +7,6 @@ class Content {
   final String textContent;
   final String createTime;
   final List<Picture> pictures;
-  final bool isRetweetedContent;
   final Content? retweetedContent;
 
   Content({
@@ -16,7 +15,6 @@ class Content {
     required this.textContent,
     required this.createTime,
     required this.pictures,
-    required this.isRetweetedContent,
     required this.retweetedContent
   });
 }

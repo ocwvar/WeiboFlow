@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "contentRetweetText":
+            MessageLookupByLibrary.simpleMessage("Retweeted Weibo"),
         "homeTitle": MessageLookupByLibrary.simpleMessage("Weibo@Flow"),
         "welcomeStatusErrorOnAuth":
             MessageLookupByLibrary.simpleMessage("User authorization failed"),
