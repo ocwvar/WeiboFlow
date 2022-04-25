@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:weibo_flow/data_singleton.dart';
 import 'package:weibo_flow/model/content.dart';
 import 'package:weibo_flow/network/model_convert.dart';
 import 'package:weibo_flow/network/urls.dart';
 
 import '../base/keys.dart';
+import '../base/pair.dart';
+import '../data_singleton.dart';
 
 class WeiboRepository {
 
@@ -20,7 +21,8 @@ class WeiboRepository {
   /// get [List] of [Content]
   /// param [page] which page to load, starting from 1
   /// param [count] how many content item in a page, default is 20, range: [0, 100]
-  Future<List<Content>> getContentListOfFriends(String page, { int count = 20 }) async {
+  /// return data: [Pair.first] -> since_id  [Pair.second] -> content list
+  Future<Pair<String, List<Content>>> getContentListOfFriends(String lastSinceId, { int count = 20 }) async {
     final Response<String> response = await DataSingleton.self.client.get<String>(
         Urls.contentOfFriends,
         queryParameters: {
@@ -31,5 +33,4 @@ class WeiboRepository {
     _throwIfFailed(response);
     return ModelConvert.toFriendContentList(response.data!);
   }
-
 }

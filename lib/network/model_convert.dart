@@ -5,12 +5,13 @@ import 'package:intl/intl.dart';
 import 'package:weibo_flow/model/picture.dart';
 import 'package:weibo_flow/model/user.dart';
 
+import '../base/pair.dart';
 import '../model/content.dart';
 
 /// convert json string to correct model object
 class ModelConvert {
 
-  static List<Content> toFriendContentList(String jsonString) {
+  static Pair<String, List<Content>> toFriendContentList(String jsonString) {
     final Map<String, dynamic> jsonObject = json.decoder.convert(jsonString);
     final List<dynamic> contents = jsonObject["statuses"];
 
@@ -19,7 +20,10 @@ class ModelConvert {
       result.add(toContent(item));
     }
 
-    return result;
+    return Pair(
+        (jsonObject["since_id"] as int).toString(),
+        result
+    );
   }
 
   static Content toContent(LinkedHashMap<String, dynamic> item) {

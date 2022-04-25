@@ -230,6 +230,8 @@ class SubWeiboContent extends StatelessWidget {
       height: 150,
       child: ListView.separated(
           padding: const EdgeInsets.only(top: 10),
+          shrinkWrap: true,
+          primary: false,
           scrollDirection: Axis.horizontal,
           physics: const AlwaysScrollableScrollPhysics(),
           itemBuilder: (context, index) {

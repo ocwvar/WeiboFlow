@@ -21,6 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final HomeViewModel viewModel = HomeViewModel();
+  final double appBarHeight = kToolbarHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -42,20 +43,43 @@ class _HomePageState extends State<HomePage> {
           child: Consumer<HomeViewModel>(
             builder: (context, viewModel, child) {
               if (viewModel.contentList.isEmpty) {
-                viewModel.requestNextPage();
+                viewModel.requestMoreNewContent();
               }
-              return ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return WeiboContent(content: viewModel.contentList[index]);
-                  },
-                  separatorBuilder: (context, index) => const SizedBox(height: 0,),
-                  itemCount: viewModel.contentList.length
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  RefreshIndicator(
+                    edgeOffset: 10.0,
+                    displacement: appBarHeight + 30,
+                    onRefresh: () {
+                      viewModel.requestMoreNewContent();
+                      return Future.delayed(Duration.zero);
+                    },
+                    child: ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return WeiboContent(content: viewModel.contentList[index]);
+                        },
+                        separatorBuilder: (context, index) => const SizedBox(height: 0,),
+                        itemCount: viewModel.contentList.length
+                    ),
+                  ),
+
+                  // bottom loading status bar
+                  _displayLoadingStatus(viewModel),
+                ],
               );
             },
           ),
         )
     );
+  }
+
+  Widget _displayLoadingStatus(HomeViewModel viewModel) {
+    if (viewModel.isLoading) {
+      return const LinearProgressIndicator();
+    }
+    return const SizedBox.shrink();
   }
 
 }

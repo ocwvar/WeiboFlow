@@ -1,6 +1,7 @@
 import 'package:weibo_flow/base/base_view_model.dart';
 import 'package:weibo_flow/model/content.dart';
 
+import '../../base/pair.dart';
 import '../../network/weibo_repository.dart';
 
 class HomeViewModel extends BaseViewModel {
@@ -15,8 +16,12 @@ class HomeViewModel extends BaseViewModel {
   /// flag of request error
   bool _wasError = false;
 
-  /// current request page number
-  int _pageNumber = 1;
+  /// request since id
+  String _lastSinceId = "0";
+
+  /// flag of loading status
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
 
   /// was last request has error
   bool wasError() {
@@ -29,14 +34,21 @@ class HomeViewModel extends BaseViewModel {
   }
 
   /// request new content
-  void requestNextPage() {
-    _repository.getContentListOfFriends(_pageNumber.toString())
-        .then((List<Content> result) {
-          _contentList.addAll(result);
+  void requestMoreNewContent() {
+    if (_isLoading) return;
+
+    _isLoading = true;
+    _repository.getContentListOfFriends(_lastSinceId)
+        .then((Pair<String, List<Content>> result) {
+          _lastSinceId = result.first;
+          _contentList.insertAll(0, result.second);
+          _wasError = false;
+          _isLoading = false;
           notifyListeners();
         })
         .onError((_, __) {
           _wasError = true;
+          _isLoading = false;
           notifyListeners();
         });
   }
