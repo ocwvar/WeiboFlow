@@ -80,6 +80,9 @@ class WeiboContent extends StatelessWidget {
               // content
               Text(content.textContent),
 
+              // images
+              _displayImages(),
+
               // retweet
               _displayRetweetContent(),
 
@@ -114,6 +117,36 @@ class WeiboContent extends StatelessWidget {
     }
 
     return SubWeiboContent(content: content.retweetedContent!,);
+  }
+
+  /// display list of images
+  /// return [SizedBox.shrink] if haven't image
+  Widget _displayImages() {
+    if (content.pictures.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return SizedBox(
+      width: double.infinity,
+      height: 150,
+      child: ListView.separated(
+          padding: const EdgeInsets.only(top: 10),
+          scrollDirection: Axis.horizontal,
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return SizedBox(
+              height: 150,
+              width: 150,
+              child: CachedNetworkImage(
+                imageUrl: content.pictures[index].thumbnail,
+                fit: BoxFit.cover,
+              ),
+            );
+          },
+          separatorBuilder: (context, index) => const SizedBox(width: 2,),
+          itemCount: content.pictures.length
+      ),
+    );
   }
 
 }
@@ -185,6 +218,8 @@ class SubWeiboContent extends StatelessWidget {
     );
   }
 
+  /// display list of images
+  /// return [SizedBox.shrink] if haven't image
   Widget _displayImages() {
     if (content.pictures.isEmpty) {
       return const SizedBox.shrink();
@@ -192,7 +227,7 @@ class SubWeiboContent extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      height: 180,
+      height: 150,
       child: ListView.separated(
           padding: const EdgeInsets.only(top: 10),
           scrollDirection: Axis.horizontal,
@@ -212,4 +247,5 @@ class SubWeiboContent extends StatelessWidget {
       ),
     );
   }
+
 }
