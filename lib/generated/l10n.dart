@@ -109,6 +109,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Today`
+  String get contentToday {
+    return Intl.message(
+      'Today',
+      name: 'contentToday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yesterday`
+  String get contentYesterday {
+    return Intl.message(
+      'Yesterday',
+      name: 'contentYesterday',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:weibo_flow/model/weibo_text.dart';
 
@@ -37,13 +38,10 @@ class WeiboTextView extends StatelessWidget {
       if (text.isEmoji) {
         result.add(
           WidgetSpan(
-            child: Image.asset(
-              text.data,
-              width: 20,
-              height: 20,
-              filterQuality: FilterQuality.low,
-              cacheWidth: 50,
-              cacheHeight: 50,
+            child: CachedNetworkImage(
+              imageUrl: text.data,
+              height: 15,
+              width: 15,
             ),
           )
         );

@@ -10,6 +10,7 @@ import 'package:weibo_flow/model/weibo_text.dart';
 
 import '../base/pair.dart';
 import '../model/content.dart';
+import '../base/ext.dart';
 
 /// convert json string to correct model object
 class ModelConvert {
@@ -41,11 +42,17 @@ class ModelConvert {
       final String temp = raw.replaceAll(RegExp("\\+[0-9]{4} "), "");
       final DateTime dateTime = DateFormat("EEE MMM dd HH:mm:ss yyyy").parse(temp);
       final String prefix;
-      if (DateTime.now().millisecondsSinceEpoch - dateTime.millisecondsSinceEpoch < 20 * 1000) {
+
+      if (DateCheck(dateTime).isJustNow()) {
         prefix = Keys.prefixDateJustNow;
+      } else if (DateCheck(dateTime).isToday()) {
+        prefix = Keys.prefixDateToday;
+      } else if (DateCheck(dateTime).isYesterday()) {
+        prefix = Keys.prefixDateYesterday;
       } else {
         prefix = "";
       }
+
       return prefix + DateFormat("yyyy-MM-dd @HH:mm:ss").format(dateTime);
     }
 
@@ -73,7 +80,7 @@ class ModelConvert {
 
     /// replace "//@" -> " ➞ @"
     String _replaceRetweetedChar(String text) {
-      return text.replaceAll("//@", " ➞ @");
+      return text.replaceAll("//@", " // @");
     }
 
     final List<WeiboText> result = [];
@@ -85,12 +92,12 @@ class ModelConvert {
           if (text[end] == ']') {
             // substring to get text: [xxx]
             final String found = text.substring(index, end + 1);
-            final String? assetsPath = DataSingleton.self.indexWeiboEmojiAssetsPath(found);
-            if (assetsPath != null) {
+            final String? imgUrl = DataSingleton.self.indexEmojiUrl(found);
+            if (imgUrl != null) {
               // is a valid tag
               lastValidEnd = end + 1;
               lastValidStart = index;
-              result.add(WeiboText.emoji(data: assetsPath));
+              result.add(WeiboText.emoji(data: imgUrl));
             }
             break;
           }

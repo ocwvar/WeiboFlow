@@ -1,6 +1,21 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'dart:io';
+
 
 void main() {
+  final File file = File("assets/json/emoji_20220426.json");
+  final List<dynamic> categoryList = json.decoder.convert(file.readAsStringSync());
+  for (Map<String, dynamic> child in categoryList) {
+    final List<dynamic> emojiList = child["value"];
+    for (Map<String, dynamic> emoji in emojiList) {
+      print(emoji["phrase"]);
+      print(emoji["url"]);
+      print('');
+    }
+  }
+}
+
+void main2() {
   const List<String> tags = [
     "[a]",
     "[b]",
@@ -62,27 +77,3 @@ void main() {
   }
 
 }
-/*
-
-for(int start = 0; start < text.length ; start++) {
-    // first loop to find first '['
-    if (text[start] == '[') {
-      for(int end = start + 1; end < text.length; end++) {
-        // second loop to find next ']'
-        if (text[end] == ']') {
-          // substring to get text: [xxx]
-          final String found = text.substring(start, end + 1);
-          if (tags.contains(found)) {
-            // is a valid tag
-            resultTag.add(found);
-          } else {
-            // is text
-
-          }
-          break;
-        }
-      }
-    }
-  }
-
- */

@@ -17,4 +17,6 @@ class Keys {
   static const String keyRequestCount = "count";
 
   static const String prefixDateJustNow = "1#";
+  static const String prefixDateToday = "2#";
+  static const String prefixDateYesterday = "3#";
 }

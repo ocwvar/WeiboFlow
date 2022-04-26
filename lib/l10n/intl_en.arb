@@ -4,5 +4,7 @@
   "welcomeStatusStarting": "Starting up application...",
   "homeTitle": "Weibo@Flow",
   "contentRetweetText": "Retweeted Weibo",
-  "contentJustNow": "Just Now"
+  "contentJustNow": "Just Now",
+  "contentToday": "Today",
+  "contentYesterday": "Yesterday"
 }
