@@ -154,10 +154,13 @@ class ModelConvert {
   /// convert to weibo-emoji data mapping list
   /// return Map<Name, AssetsFilePath>
   static Map<String, String>toEmojiMapping(String jsonString) {
-    final List<dynamic> jsonArray = json.decoder.convert(jsonString);
     final Map<String, String> result = {};
-    for(LinkedHashMap<String, dynamic> item in jsonArray) {
-      result[item["text"]] = "assets/weibo_emoji/" + item["file_name"];
+    final List<dynamic> categoryList = json.decoder.convert(jsonString);
+    for (Map<String, dynamic> child in categoryList) {
+      final List<dynamic> emojiList = child["value"];
+      for (Map<String, dynamic> emoji in emojiList) {
+        result[emoji["phrase"]] = emoji["url"];
+      }
     }
     return result;
   }

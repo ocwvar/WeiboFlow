@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:weibo_flow/base/keys.dart';
 import 'package:weibo_flow/data_singleton.dart';
 
@@ -8,6 +10,7 @@ import '../../base/base_view_model.dart';
 import '../../base/log.dart';
 import '../../base/native_bridge.dart';
 import '../../network/model_convert.dart';
+import '../../network/urls.dart';
 
 const String tag = "welcome_vm";
 class WelcomeViewModel extends BaseViewModel {
@@ -33,6 +36,8 @@ class WelcomeViewModel extends BaseViewModel {
 
   /// init sdk and also user authorize if there
   /// was no token or token was expired
+  /// This is first step
+  /// Next step -> [_onCheckSdkTokens]
   void initEveryThing() {
     Logger.self.d(tag, "initEveryThing");
     _initCalled = true;
@@ -64,7 +69,7 @@ class WelcomeViewModel extends BaseViewModel {
 
   /// on load emoji mapping json
   void _onLoadEmojiMapping() {
-    rootBundle.load("assets/weibo_emoji/mapping.json").then((ByteData value) {
+    rootBundle.load("assets/json/emoji_20220426.json").then((ByteData value) {
       try {
         final String mappingJson = utf8.decoder.convert(value.buffer.asUint8List(0));
         final Map<String, String> result = ModelConvert.toEmojiMapping(mappingJson);
@@ -93,6 +98,10 @@ class WelcomeViewModel extends BaseViewModel {
 
     DataSingleton.self.updateSdkModel(newModel);
     super.saveStatusModelToCache(newModel);
+  }
+
+  void _onSyncEmoji() {
+
   }
 
   /// on everything was succeed
