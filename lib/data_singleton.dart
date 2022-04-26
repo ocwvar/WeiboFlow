@@ -1,4 +1,11 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:weibo_flow/base/log.dart';
+
+import 'base/keys.dart';
 
 class DataSingleton {
   static final DataSingleton self = DataSingleton._internal();
@@ -17,6 +24,14 @@ class DataSingleton {
   bool get wasTokenExpired => _wasTokenExpired;
   bool _wasTokenExpired = true;
 
+  /// request client
+  Dio get client => _client;
+  late Dio _client;
+
+  /// weibo-emoji mapping
+  /// Map<name, file_path>
+  Map<String, String> _emojiMapping = {};
+
   /// update a new SDK model
   void updateSdkModel(SdkStatusModel newModel) {
     _wasTokenExpired = false;
@@ -27,6 +42,28 @@ class DataSingleton {
   /// mark as token expired
   void markTokenExpired() {
     _wasTokenExpired = true;
+  }
+
+  /// init dio network request client
+  void initRequestClient() {
+    _client = Dio(BaseOptions(
+      receiveTimeout: 5000,
+      sendTimeout: 5000,
+      connectTimeout: 5000,
+      queryParameters: {
+        Keys.keyRequestTokenAccess: sdkModel.accessToken
+      }
+    ));
+  }
+
+  /// init with new source of weibo-emoji
+  void initEmojiMappingData(Map<String, String> source) {
+    _emojiMapping.clear();
+    _emojiMapping.addAll(source);
+  }
+
+  String? indexWeiboEmojiAssetsPath(String name) {
+    return _emojiMapping[name];
   }
 
 }

@@ -79,6 +79,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Weibo@Flow`
+  String get homeTitle {
+    return Intl.message(
+      'Weibo@Flow',
+      name: 'homeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retweeted Weibo`
+  String get contentRetweetText {
+    return Intl.message(
+      'Retweeted Weibo',
+      name: 'contentRetweetText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Just Now`
+  String get contentJustNow {
+    return Intl.message(
+      'Just Now',
+      name: 'contentJustNow',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

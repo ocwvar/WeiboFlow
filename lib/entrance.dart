@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weibo_flow/pages/welcome/view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:weibo_flow/theme_view_model.dart';
 
-import 'entrance_view_model.dart';
 import 'generated/l10n.dart';
 
 void main() {
@@ -20,7 +20,10 @@ class AppEntrance extends StatelessWidget {
       create: (context) => ThemeViewModel(),
       child: Consumer<ThemeViewModel>(
         builder: (context, viewModel, child) {
-          viewModel.setThemeFromColorOf(baseColor: Colors.redAccent, update: false);
+          if (!viewModel.isSettingSynced) {
+            viewModel.syncLastCachedConfig();
+            return const SizedBox.shrink();
+          }
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             localizationsDelegates: const [
@@ -40,3 +43,10 @@ class AppEntrance extends StatelessWidget {
     );
   }
 }
+/*
+SvgPicture.asset(
+                  "assets/bg/main_bg.svg",
+                  color: viewModel.getCurrentThemeData().colorScheme.primary.withOpacity(0.4),
+                  fit: BoxFit.contain,
+                )
+ */
