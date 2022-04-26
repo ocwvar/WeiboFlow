@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:weibo_flow/base/keys.dart';
 import 'package:weibo_flow/data_singleton.dart';
 
@@ -10,7 +8,6 @@ import '../../base/base_view_model.dart';
 import '../../base/log.dart';
 import '../../base/native_bridge.dart';
 import '../../network/model_convert.dart';
-import '../../network/urls.dart';
 
 const String tag = "welcome_vm";
 class WelcomeViewModel extends BaseViewModel {
@@ -98,10 +95,6 @@ class WelcomeViewModel extends BaseViewModel {
 
     DataSingleton.self.updateSdkModel(newModel);
     super.saveStatusModelToCache(newModel);
-  }
-
-  void _onSyncEmoji() {
-
   }
 
   /// on everything was succeed
