@@ -15,4 +15,6 @@ class Keys {
 
   static const String keyRequestTokenAccess = "access_token";
   static const String keyRequestCount = "count";
+
+  static const String prefixDateJustNow = "1#";
 }

@@ -2,6 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:weibo_flow/generated/l10n.dart';
 import 'package:weibo_flow/model/content.dart';
+import 'package:weibo_flow/widget/text_view.dart';
+
+import '../base/keys.dart';
+import '../model/picture.dart';
 
 const double cardCornerRadius = 15.0;
 const double mainCardElevation = 10.0;
@@ -78,10 +82,10 @@ class WeiboContent extends StatelessWidget {
               const SizedBox(height: 10,),
 
               // content
-              Text(content.textContent),
+              WeiboTextView(textList: content.weiboTextContent),
 
               // images
-              _displayImages(),
+              displayImages(content.pictures),
 
               // retweet
               _displayRetweetContent(),
@@ -91,7 +95,7 @@ class WeiboContent extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Text(
-                  content.createTime,
+                  handlePrefixForDateTime(context, content.createTime),
                   textAlign: TextAlign.right,
                   style: Theme.of(context).textTheme.caption,
                 ),
@@ -121,8 +125,8 @@ class WeiboContent extends StatelessWidget {
 
   /// display list of images
   /// return [SizedBox.shrink] if haven't image
-  Widget _displayImages() {
-    if (content.pictures.isEmpty) {
+  static Widget displayImages(List<Picture> source) {
+    if (source.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -138,15 +142,27 @@ class WeiboContent extends StatelessWidget {
               height: 150,
               width: 150,
               child: CachedNetworkImage(
-                imageUrl: content.pictures[index].thumbnail,
+                imageUrl: source[index].thumbnail,
                 fit: BoxFit.cover,
               ),
             );
           },
           separatorBuilder: (context, index) => const SizedBox(width: 2,),
-          itemCount: content.pictures.length
+          itemCount: source.length
       ),
     );
+  }
+
+  /// replace prefix in time string with some meaningful word:
+  /// "Just now" ... more to add
+  static String handlePrefixForDateTime(BuildContext context, String text) {
+    switch(text.substring(0, 3)){
+      case Keys.prefixDateJustNow:
+        return text.replaceFirst(Keys.prefixDateJustNow, S.of(context).contentJustNow + "  ");
+
+      default:
+        return text;
+    }
   }
 
 }
@@ -195,17 +211,17 @@ class SubWeiboContent extends StatelessWidget {
                 const SizedBox(height: 10,),
 
                 // content
-                Text(content.textContent),
+                WeiboTextView(textList: content.weiboTextContent),
 
                 // display images list
-                _displayImages(),
+                WeiboContent.displayImages(content.pictures),
 
                 // time string
                 const SizedBox(height: 8,),
                 SizedBox(
                   width: double.infinity,
                   child: Text(
-                    content.createTime,
+                    WeiboContent.handlePrefixForDateTime(context, content.createTime),
                     textAlign: TextAlign.right,
                     style: Theme.of(context).textTheme.caption,
                   ),
@@ -214,38 +230,6 @@ class SubWeiboContent extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  /// display list of images
-  /// return [SizedBox.shrink] if haven't image
-  Widget _displayImages() {
-    if (content.pictures.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return SizedBox(
-      width: double.infinity,
-      height: 150,
-      child: ListView.separated(
-          padding: const EdgeInsets.only(top: 10),
-          shrinkWrap: true,
-          primary: false,
-          scrollDirection: Axis.horizontal,
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return SizedBox(
-              height: 150,
-              width: 150,
-              child: CachedNetworkImage(
-                imageUrl: content.pictures[index].thumbnail,
-                fit: BoxFit.cover,
-              ),
-            );
-          },
-          separatorBuilder: (context, index) => const SizedBox(width: 2,),
-          itemCount: content.pictures.length
       ),
     );
   }

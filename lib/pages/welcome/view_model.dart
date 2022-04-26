@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:weibo_flow/base/keys.dart';
 import 'package:weibo_flow/data_singleton.dart';
 
 import '../../base/base_view_model.dart';
 import '../../base/log.dart';
 import '../../base/native_bridge.dart';
+import '../../network/model_convert.dart';
 
 const String tag = "welcome_vm";
 class WelcomeViewModel extends BaseViewModel {
@@ -24,6 +26,9 @@ class WelcomeViewModel extends BaseViewModel {
 
   bool get hasErrorOnAuth => _errorOnAuth;
   bool _errorOnAuth = false;
+
+  bool get hasErrorOnLoadRes => _errorOnLoadRes;
+  bool _errorOnLoadRes = false;
 
 
   /// init sdk and also user authorize if there
@@ -46,14 +51,31 @@ class WelcomeViewModel extends BaseViewModel {
       _nativeBridge.authSDK().then((String jsonString){
         Logger.self.d("welcome_vm", "got new sdk token model json: $jsonString");
         _onSdkAuthSucceed(jsonString);
+        _onLoadEmojiMapping();
       }).onError((error, stackTrace){
         _onSdkAuthFailed();
       });
       return;
     }
 
-    // our token still valid, we good to go now
-    _onEveryThingSucceed();
+    // our token still valid, go to next step
+    _onLoadEmojiMapping();
+  }
+
+  /// on load emoji mapping json
+  void _onLoadEmojiMapping() {
+    rootBundle.load("assets/weibo_emoji/mapping.json").then((ByteData value) {
+      try {
+        final String mappingJson = utf8.decoder.convert(value.buffer.asUint8List(0));
+        final Map<String, String> result = ModelConvert.toEmojiMapping(mappingJson);
+        DataSingleton.self.initEmojiMappingData(result);
+        _onEveryThingSucceed();
+      } catch (_) {
+        _onLoadResFailed();
+      }
+    }).onError((_, __){
+      _onLoadResFailed();
+    });
   }
 
   /// called when [_nativeBridge.authSDK] was success
@@ -71,7 +93,6 @@ class WelcomeViewModel extends BaseViewModel {
 
     DataSingleton.self.updateSdkModel(newModel);
     super.saveStatusModelToCache(newModel);
-    _onEveryThingSucceed();
   }
 
   /// on everything was succeed
@@ -112,6 +133,15 @@ class WelcomeViewModel extends BaseViewModel {
     Logger.self.e(tag, "_onSdkInitFailed");
     _good2Go = false;
     _errorOnInit = true;
+    notifyListeners();
+  }
+
+  /// on resource init was failed
+  /// we should not do anything else again
+  void _onLoadResFailed() {
+    Logger.self.e(tag, "_onLoadResFailed");
+    _good2Go = false;
+    _errorOnLoadRes = true;
     notifyListeners();
   }
 

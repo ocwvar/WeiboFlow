@@ -3,5 +3,6 @@
   "welcomeStatusErrorOnInit": "Weibo SDK initialization failed",
   "welcomeStatusStarting": "Starting up application...",
   "homeTitle": "Weibo@Flow",
-  "contentRetweetText": "Retweeted Weibo"
+  "contentRetweetText": "Retweeted Weibo",
+  "contentJustNow": "Just Now"
 }

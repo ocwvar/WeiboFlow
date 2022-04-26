@@ -99,6 +99,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Just Now`
+  String get contentJustNow {
+    return Intl.message(
+      'Just Now',
+      name: 'contentJustNow',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

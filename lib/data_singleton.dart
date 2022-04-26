@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:weibo_flow/base/log.dart';
 
 import 'base/keys.dart';
@@ -24,6 +28,10 @@ class DataSingleton {
   Dio get client => _client;
   late Dio _client;
 
+  /// weibo-emoji mapping
+  /// Map<name, file_path>
+  Map<String, String> _emojiMapping = {};
+
   /// update a new SDK model
   void updateSdkModel(SdkStatusModel newModel) {
     _wasTokenExpired = false;
@@ -47,6 +55,17 @@ class DataSingleton {
       }
     ));
   }
+
+  /// init with new source of weibo-emoji
+  void initEmojiMappingData(Map<String, String> source) {
+    _emojiMapping.clear();
+    _emojiMapping.addAll(source);
+  }
+
+  String? indexWeiboEmojiAssetsPath(String name) {
+    return _emojiMapping[name];
+  }
+
 }
 
 class SdkStatusModel {
