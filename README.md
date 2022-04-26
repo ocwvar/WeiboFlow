@@ -20,3 +20,7 @@ A third party Weibo client for Android (iOS may later).
 ...
 # Latest screenshots
 - Update time: 2022-04-26
+
+![](https://raw.githubusercontent.com/ocwvar/WeiboFlow/main/screenshots/1_20220426-151906_weibo_flow.png)
+![](https://raw.githubusercontent.com/ocwvar/WeiboFlow/main/screenshots/2_20220426-151916_weibo_flow.png)
+![](https://raw.githubusercontent.com/ocwvar/WeiboFlow/main/screenshots/3_20220426-151829_weibo_flow.png)
