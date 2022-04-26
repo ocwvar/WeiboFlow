@@ -1,5 +1,7 @@
 # Weibo@Flow
-A third party Weibo client for Android (iOS may later)
+A third party Weibo client for Android (iOS may later). 
+
+💪 Powered by Flutter 💪
 
 # Supported function list:
 - Login with user authorization in Android Weibo SDK and keep access_token
@@ -16,3 +18,5 @@ A third party Weibo client for Android (iOS may later)
 - User detail dialog
 
 ...
+# Latest screenshots
+- Update time: 2022-04-26
