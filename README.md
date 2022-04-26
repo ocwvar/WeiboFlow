@@ -1,7 +1,7 @@
-# Weibo@Flow
-A third party Weibo client for Android (iOS may later). 
+# ![](https://raw.githubusercontent.com/ocwvar/WeiboFlow/main/screenshots/flutter_logo_48.png)  Weibo@Flow
+A third party Weibo client for Android ( iOS may later )
 
-💪 Powered by Flutter 💪
+💪 Powered by *Flutter* 💪
 
 # Supported function list:
 - Login with user authorization in Android Weibo SDK and keep access_token
