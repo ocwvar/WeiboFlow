@@ -43,12 +43,15 @@ class WeiboContent extends StatelessWidget {
                 children: [
                   // user avatar
                   SizedBox(
-                    width: 50,
-                    height: 50,
+                    width: 40,
+                    height: 40,
                     child: ClipOval(
-                      clipBehavior: Clip.antiAlias,
+                      clipBehavior: Clip.hardEdge,
                       child: CachedNetworkImage(
                         imageUrl: content.fromUser.avatarUrl,
+                        filterQuality: FilterQuality.low,
+                        width: 40,
+                        height: 40,
                         placeholder: (context, string) => const Icon(Icons.account_circle_sharp),
                         placeholderFadeInDuration: const Duration(seconds: 1),
                       ),
@@ -65,17 +68,6 @@ class WeiboContent extends StatelessWidget {
                       Text(content.fromUser.name, style: _styleOfUserTitle(context),),
                       Text(content.fromUser.location, style: Theme.of(context).textTheme.caption)
                     ],
-                  ),
-
-                  const Spacer(),
-
-                  IconButton(
-                      onPressed: (){
-                      },
-                      icon: Icon(
-                        Icons.more_horiz,
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                      )
                   )
                 ],
               ),
@@ -156,9 +148,17 @@ class WeiboContent extends StatelessWidget {
   /// replace prefix in time string with some meaningful word:
   /// "Just now" ... more to add
   static String handlePrefixForDateTime(BuildContext context, String text) {
-    switch(text.substring(0, 3)){
+    final String prefix = text.substring(0, 2);
+    switch(prefix){
+
       case Keys.prefixDateJustNow:
         return text.replaceFirst(Keys.prefixDateJustNow, S.of(context).contentJustNow + "  ");
+
+      case Keys.prefixDateToday:
+        return text.replaceFirst(Keys.prefixDateToday, S.of(context).contentToday + "  ");
+
+      case Keys.prefixDateYesterday:
+        return text.replaceFirst(Keys.prefixDateYesterday, S.of(context).contentYesterday + "  ");
 
       default:
         return text;

@@ -22,7 +22,7 @@ class WeiboRepository {
   /// param [page] which page to load, starting from 1
   /// param [count] how many content item in a page, default is 20, range: [0, 100]
   /// return data: [Pair.first] -> since_id  [Pair.second] -> content list
-  Future<Pair<String, List<Content>>> getContentListOfFriends(String lastSinceId, { int count = 20 }) async {
+  Future<Pair<String, List<Content>>> getContentListOfFriends(String lastSinceId, { int count = 40 }) async {
     final Response<String> response = await DataSingleton.self.client.get<String>(
         Urls.contentOfFriends,
         queryParameters: {

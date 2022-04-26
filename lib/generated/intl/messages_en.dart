@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "contentJustNow": MessageLookupByLibrary.simpleMessage("Just Now"),
         "contentRetweetText":
             MessageLookupByLibrary.simpleMessage("Retweeted Weibo"),
+        "contentToday": MessageLookupByLibrary.simpleMessage("Today"),
+        "contentYesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
         "homeTitle": MessageLookupByLibrary.simpleMessage("Weibo@Flow"),
         "welcomeStatusErrorOnAuth":
             MessageLookupByLibrary.simpleMessage("User authorization failed"),

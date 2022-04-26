@@ -33,6 +33,8 @@ class WelcomeViewModel extends BaseViewModel {
 
   /// init sdk and also user authorize if there
   /// was no token or token was expired
+  /// This is first step
+  /// Next step -> [_onCheckSdkTokens]
   void initEveryThing() {
     Logger.self.d(tag, "initEveryThing");
     _initCalled = true;
@@ -64,7 +66,7 @@ class WelcomeViewModel extends BaseViewModel {
 
   /// on load emoji mapping json
   void _onLoadEmojiMapping() {
-    rootBundle.load("assets/weibo_emoji/mapping.json").then((ByteData value) {
+    rootBundle.load("assets/json/emoji_20220426.json").then((ByteData value) {
       try {
         final String mappingJson = utf8.decoder.convert(value.buffer.asUint8List(0));
         final Map<String, String> result = ModelConvert.toEmojiMapping(mappingJson);

@@ -31,7 +31,7 @@ class ThemeViewModel extends ChangeNotifier {
   }
 
   void debugC() {
-    _setThemeFromColorOf(Colors.blueAccent);
+    _setThemeFromColorOf(Colors.deepPurple);
   }
 
   /// set new theme color

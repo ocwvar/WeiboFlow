@@ -1,3 +1,8 @@
+
+/// a model of weibo-text
+/// it maybe a PlainText or weibo-emoji phase
+/// if [isText] == True, [data] is plain text
+/// if [isEmoji] == True, [data] is url of emoji
 class WeiboText {
   final bool isText;
   final bool isEmoji;
