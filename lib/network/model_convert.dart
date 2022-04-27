@@ -172,4 +172,14 @@ class ModelConvert {
     return result;
   }
 
+  /// convert to weibo error response pair
+  /// return Pair<error_code, error_message>
+  static Pair<int, String> toWeiboErrorResponse(String jsonString) {
+    final Map<String, dynamic> jsonObject = json.decoder.convert(jsonString);
+    return Pair(
+      jsonObject["error_code"],
+      jsonObject["error"]
+    );
+  }
+
 }

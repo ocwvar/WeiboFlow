@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:weibo_flow/base/log.dart';
 import 'package:weibo_flow/model/content.dart';
 import 'package:weibo_flow/model/enum/weibo_response_type.dart';
 import 'package:weibo_flow/network/model_convert.dart';
@@ -21,21 +22,40 @@ class WeiboRepository {
 
       // request error or no response content
       if (response.statusCode != 200 || response.data == null) {
-        return WeiboResponse.failure(
-            responseType: WeiboResponseType.failure
-        );
+        throw Exception("statusCode is not 200 or response.data is NULL");
       }
 
       // all good
       return WeiboResponse.success(
           jsonString: response.data!
       );
-    }catch (e) {
+    } catch (e) {
       // any exception during requesting
-      return WeiboResponse.failure(
-          responseType: WeiboResponseType.tokenInvalid
-      );
+      Logger.self.e("REQUEST_ERROR", e.toString());
+      final WeiboResponseType failureType = _getErrorResponseType(e);
+      return WeiboResponse.failure(responseType: failureType);
     }
+  }
+
+  /// will check error_code if [e] is [DioError] and response a valid type
+  /// or just return [WeiboResponseType.failure]
+  WeiboResponseType _getErrorResponseType(Object e){
+    if (e is DioError) {
+      final dynamic errorText = e.response?.data;
+      if (errorText != null && errorText is String) {
+        final Pair<int, String> error = ModelConvert.toWeiboErrorResponse(errorText);
+
+        // error code mapping here:
+        switch (error.first) {
+          case 21332: // access token invalid
+          case 21327: // access token expired
+            return WeiboResponseType.tokenInvalid;
+        }
+
+      }
+    }
+
+    return WeiboResponseType.failure;
   }
 
   /// will return [Result] with error code if its a error response
@@ -54,7 +74,7 @@ class WeiboRepository {
   }
 
   /// get [List] of [Content]
-  /// param [page] which page to load, starting from 1
+  /// param [lastSinceId] will load content of weibo which is newer than this.
   /// param [count] how many content item in a page, default is 20, range: [0, 100]
   /// return data: [Pair.first] -> since_id  [Pair.second] -> content list
   Future<Result<Pair<String, List<Content>>>> getContentListOfFriends(String lastSinceId, { int count = 40 }) async {
