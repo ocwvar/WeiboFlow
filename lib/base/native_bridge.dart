@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:weibo_flow/base/keys.dart';
+
+import '../constants.dart';
 
 class NativeBridge {
   final MethodChannel _platform = const MethodChannel(Keys.channel);

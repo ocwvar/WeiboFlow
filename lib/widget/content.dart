@@ -4,7 +4,7 @@ import 'package:weibo_flow/generated/l10n.dart';
 import 'package:weibo_flow/model/content.dart';
 import 'package:weibo_flow/widget/text_view.dart';
 
-import '../base/keys.dart';
+import '../constants.dart';
 import '../model/picture.dart';
 
 const double cardCornerRadius = 15.0;

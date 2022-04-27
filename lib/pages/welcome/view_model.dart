@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:weibo_flow/base/keys.dart';
 import 'package:weibo_flow/data_singleton.dart';
 
 import '../../base/base_view_model.dart';
 import '../../base/log.dart';
 import '../../base/native_bridge.dart';
+import '../../constants.dart';
 import '../../network/model_convert.dart';
 
 const String tag = "welcome_vm";
-class WelcomeViewModel extends BaseViewModel {
+class WelcomeViewModel extends BaseRequestViewModel {
 
   // the bridge to native level
   final NativeBridge _nativeBridge = NativeBridge();
@@ -47,9 +47,10 @@ class WelcomeViewModel extends BaseViewModel {
   }
 
   /// on check if we need to request new token from user
+  /// Next step -> [_onLoadEmojiMapping]
   void _onCheckSdkTokens() {
     Logger.self.d(tag, "_onCheckSdkTokens");
-    if (!super.isTokenValid()) {
+    if (!super.isCachedTokenValid()) {
       _nativeBridge.authSDK().then((String jsonString){
         Logger.self.d("welcome_vm", "got new sdk token model json: $jsonString");
         _onSdkAuthSucceed(jsonString);
@@ -65,6 +66,8 @@ class WelcomeViewModel extends BaseViewModel {
   }
 
   /// on load emoji mapping json
+  /// Final step.
+  /// succeed -> [_onEveryThingSucceed]
   void _onLoadEmojiMapping() {
     rootBundle.load("assets/json/emoji_20220426.json").then((ByteData value) {
       try {

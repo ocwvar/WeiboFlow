@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:weibo_flow/base/log.dart';
 
-import 'base/keys.dart';
+import '../constants.dart';
 
 class DataSingleton {
   static final DataSingleton self = DataSingleton._internal();
@@ -47,7 +47,7 @@ class DataSingleton {
       sendTimeout: 5000,
       connectTimeout: 5000,
       queryParameters: {
-        Keys.keyRequestTokenAccess: sdkModel.accessToken
+        Keys.keyRequestTokenAccess: "sdf"
       }
     ));
   }

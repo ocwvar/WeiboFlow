@@ -1,14 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weibo_flow/base/keys.dart';
+import 'package:weibo_flow/constants.dart';
 import 'package:weibo_flow/data_singleton.dart';
 
+import '../model/wrap_response.dart';
+import '../network/weibo_repository.dart';
 import 'log.dart';
 
 const String tag = "token_check";
-class BaseViewModel extends ChangeNotifier {
+abstract class BaseRequestViewModel extends ChangeNotifier {
 
-  bool isTokenValid() {
+  /// flag of loading status
+  bool get isLoading => _isLoading;
+  bool _isLoading = false;
+
+  /// error codes
+  int get errorCode => _errorCode;
+  int _errorCode = ErrorCodes.errorNon;
+
+  /// repository
+  WeiboRepository get repository => _repository;
+  final WeiboRepository _repository = WeiboRepository();
+
+  /// begin new request to weibo-backend
+  /// param [requestBlock] will return a [Future] task to request
+  /// param [responseBlock] will be called with result [T] if succeed
+  ///
+  /// will update [isLoading] when request begin and notify listeners
+  /// will update [errorCode] and notify listeners if any happened during requesting
+  void newRequest<T>(
+      Future<Result<T>> Function(WeiboRepository repository) requestBlock,
+      Function(T result) responseBlock
+      ) {
+    // begin loading status
+    _isLoading = true;
+    notifyListeners();
+
+    // begin request
+    requestBlock(_repository).then((Result<T> result) {
+      _isLoading = false;
+
+      // try to get result
+      final T? data = _getResultDataIfSucceed(result);
+      if (data != null) {
+        responseBlock(data);
+      }
+
+      notifyListeners();
+    }).onError((_, __){
+      _isLoading = false;
+      _errorCode = ErrorCodes.errorUnknown;
+      notifyListeners();
+    });
+  }
+
+  /// check if cached token [DataSingleton.self.sdkModel.accessToken] still valid
+  bool isCachedTokenValid() {
     // check if we have data in singleton
     if (DataSingleton.self.wasTokenExpired) {
       Logger.self.e(tag, "was expired");
@@ -63,6 +110,18 @@ class BaseViewModel extends ChangeNotifier {
         generateTime: generateTime,
         uid: uid
     );
+  }
+
+  /// return [T] if its a succeed result
+  /// or it will return [Null] and setup error status
+  T? _getResultDataIfSucceed<T>(Result<T> result) {
+    if (result.result != null) {
+      // has data, means okay
+      return result.result;
+    }
+
+    _errorCode = result.errorCode ?? ErrorCodes.errorUnknown;
+    return null;
   }
 
 }

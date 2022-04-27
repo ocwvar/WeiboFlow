@@ -2,13 +2,13 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
-import 'package:weibo_flow/base/keys.dart';
 import 'package:weibo_flow/data_singleton.dart';
 import 'package:weibo_flow/model/picture.dart';
 import 'package:weibo_flow/model/user.dart';
 import 'package:weibo_flow/model/weibo_text.dart';
 
 import '../base/pair.dart';
+import '../constants.dart';
 import '../model/content.dart';
 import '../base/ext.dart';
 
