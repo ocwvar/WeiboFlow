@@ -34,11 +34,13 @@ abstract class BaseRequestViewModel extends ChangeNotifier {
       ) {
     // begin loading status
     _isLoading = true;
+    _errorCode = ErrorCodes.errorNon;
     notifyListeners();
 
     // begin request
     requestBlock(_repository).then((Result<T> result) {
       _isLoading = false;
+      _errorCode = ErrorCodes.errorNon;
 
       // try to get result
       final T? data = _getResultDataIfSucceed(result);

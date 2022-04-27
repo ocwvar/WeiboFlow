@@ -4,6 +4,7 @@ import 'package:weibo_flow/generated/l10n.dart';
 import 'package:weibo_flow/pages/home/view_model.dart';
 import 'package:weibo_flow/widget/content.dart';
 import 'package:weibo_flow/widget/page.dart';
+import 'package:weibo_flow/widget/response_status_container.dart';
 
 import '../../theme_view_model.dart';
 import '../../widget/app_bar.dart';
@@ -45,29 +46,32 @@ class _HomePageState extends State<HomePage> {
               if (viewModel.contentList.isEmpty) {
                 viewModel.requestMoreNewContent();
               }
-              return Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  RefreshIndicator(
-                    edgeOffset: 10.0,
-                    displacement: appBarHeight + 30,
-                    onRefresh: () {
-                      viewModel.requestMoreNewContent();
-                      return Future.delayed(Duration.zero);
-                    },
-                    child: ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return WeiboContent(content: viewModel.contentList[index]);
+              return ResponseStatusContainer(
+                  baseRequestViewModel: viewModel,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      RefreshIndicator(
+                        edgeOffset: 10.0,
+                        displacement: appBarHeight + 30,
+                        onRefresh: () {
+                          viewModel.requestMoreNewContent();
+                          return Future.delayed(Duration.zero);
                         },
-                        separatorBuilder: (context, index) => const SizedBox(height: 0,),
-                        itemCount: viewModel.contentList.length
-                    ),
-                  ),
+                        child: ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return WeiboContent(content: viewModel.contentList[index]);
+                            },
+                            separatorBuilder: (context, index) => const SizedBox(height: 0,),
+                            itemCount: viewModel.contentList.length
+                        ),
+                      ),
 
-                  // bottom loading status bar
-                  _displayLoadingStatus(viewModel),
-                ],
+                      // bottom loading status bar
+                      _displayLoadingStatus(viewModel),
+                    ],
+                  )
               );
             },
           ),

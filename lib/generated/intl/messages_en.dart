@@ -27,7 +27,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Retweeted Weibo"),
         "contentToday": MessageLookupByLibrary.simpleMessage("Today"),
         "contentYesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
+        "dialogButtonReLogin":
+            MessageLookupByLibrary.simpleMessage("Login again"),
+        "dialogErrorNormal": MessageLookupByLibrary.simpleMessage(
+            "Looks like we are having a network issue. But don\'t worry lets try again!"),
+        "dialogErrorTitle": MessageLookupByLibrary.simpleMessage("Woops!"),
+        "dialogErrorTokenExpired": MessageLookupByLibrary.simpleMessage(
+            "Your account access token seems expired and can not be refresh. Please login again."),
         "homeTitle": MessageLookupByLibrary.simpleMessage("Weibo@Flow"),
+        "retry": MessageLookupByLibrary.simpleMessage("Retry"),
         "welcomeStatusErrorOnAuth":
             MessageLookupByLibrary.simpleMessage("User authorization failed"),
         "welcomeStatusErrorOnInit": MessageLookupByLibrary.simpleMessage(

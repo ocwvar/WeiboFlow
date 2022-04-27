@@ -47,7 +47,7 @@ class DataSingleton {
       sendTimeout: 5000,
       connectTimeout: 5000,
       queryParameters: {
-        Keys.keyRequestTokenAccess: "sdf"
+        Keys.keyRequestTokenAccess: sdkModel.accessToken
       }
     ));
   }

@@ -3,8 +3,16 @@
   "welcomeStatusErrorOnInit": "Weibo SDK initialization failed",
   "welcomeStatusStarting": "Starting up application...",
   "homeTitle": "Weibo@Flow",
+
+  "retry": "Retry",
+
   "contentRetweetText": "Retweeted Weibo",
   "contentJustNow": "Just Now",
   "contentToday": "Today",
-  "contentYesterday": "Yesterday"
+  "contentYesterday": "Yesterday",
+
+  "dialogButtonReLogin": "Login again",
+  "dialogErrorTitle": "Woops!",
+  "dialogErrorNormal": "Looks like we are having a network issue. But don't worry lets try again!",
+  "dialogErrorTokenExpired": "Your account access token seems expired and can not be refresh. Please login again."
 }
