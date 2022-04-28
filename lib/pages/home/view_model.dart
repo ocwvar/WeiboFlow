@@ -12,6 +12,11 @@ class HomeViewModel extends BaseRequestViewModel {
   /// request since id
   String _lastSinceId = "0";
 
+  @override
+  void onRetryCalled(String tag) {
+    requestMoreNewContent();
+  }
+
   /// request new content
   void requestMoreNewContent() {
     if (super.isLoading) return;

@@ -22,6 +22,16 @@ abstract class BaseRequestViewModel extends ChangeNotifier {
   WeiboRepository get repository => _repository;
   final WeiboRepository _repository = WeiboRepository();
 
+  /// on need to retry by view layer
+  void onRetryCalled(String tag);
+
+  /// a [Future] that will finish when [_isLoading] is false
+  Future<void> waitUntilLoadingFinished() async {
+    while(_isLoading) {
+      await Future.delayed(const Duration(seconds: 1));
+    }
+  }
+
   /// begin new request to weibo-backend
   /// param [requestBlock] will return a [Future] task to request
   /// param [responseBlock] will be called with result [T] if succeed

@@ -12,8 +12,9 @@ import '../../widget/app_bar.dart';
 class HomePage extends StatefulWidget {
 
   final ThemeViewModel themeViewModel;
+  bool isFirstEnter = true;
 
-  const HomePage({Key? key, required this.themeViewModel}) : super(key: key);
+  HomePage({Key? key, required this.themeViewModel}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _HomePageState();
@@ -26,27 +27,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // on page has been fully created, then we check if we need to
+    // request data
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if (widget.isFirstEnter) {
+        widget.isFirstEnter = false;
+        viewModel.requestMoreNewContent();
+      }
+    });
+
     return ThemedPage(
-        appBar: BlurAppBarFactory().get(
-          S().homeTitle,
-          context,
-          actions: [
-            IconButton(onPressed: (){
-              widget.themeViewModel.debugD();
-            }, icon: const Icon(Icons.wb_sunny)),
-            IconButton(onPressed: (){
-              widget.themeViewModel.debugC();
-            }, icon: const Icon(Icons.color_lens)),
-          ]
-        ),
+        appBar: _getAppBar(context),
         child: ChangeNotifierProvider(
           create: (context) => viewModel,
           child: Consumer<HomeViewModel>(
             builder: (context, viewModel, child) {
-              if (viewModel.contentList.isEmpty) {
-                viewModel.requestMoreNewContent();
-              }
               return ResponseStatusContainer(
+                  themeViewModel: widget.themeViewModel,
                   baseRequestViewModel: viewModel,
                   child: Stack(
                     alignment: Alignment.bottomCenter,
@@ -56,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                         displacement: appBarHeight + 30,
                         onRefresh: () {
                           viewModel.requestMoreNewContent();
-                          return Future.delayed(Duration.zero);
+                          return viewModel.waitUntilLoadingFinished();
                         },
                         child: ListView.separated(
                             physics: const BouncingScrollPhysics(),
@@ -67,9 +64,6 @@ class _HomePageState extends State<HomePage> {
                             itemCount: viewModel.contentList.length
                         ),
                       ),
-
-                      // bottom loading status bar
-                      _displayLoadingStatus(viewModel),
                     ],
                   )
               );
@@ -79,11 +73,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _displayLoadingStatus(HomeViewModel viewModel) {
-    if (viewModel.isLoading) {
-      return const LinearProgressIndicator();
-    }
-    return const SizedBox.shrink();
+  PreferredSize _getAppBar(BuildContext context) {
+    return BlurAppBarFactory().get(
+        S().homeTitle,
+        context,
+        actions: [
+          IconButton(onPressed: (){
+            widget.themeViewModel.debugD();
+          }, icon: const Icon(Icons.wb_sunny)),
+          IconButton(onPressed: (){
+            widget.themeViewModel.debugC();
+          }, icon: const Icon(Icons.color_lens)),
+        ]
+    );
   }
 
 }

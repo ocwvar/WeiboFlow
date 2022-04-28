@@ -30,6 +30,9 @@ class WelcomeViewModel extends BaseRequestViewModel {
   bool get hasErrorOnLoadRes => _errorOnLoadRes;
   bool _errorOnLoadRes = false;
 
+  @override
+  void onRetryCalled(String tag) {
+  }
 
   /// init sdk and also user authorize if there
   /// was no token or token was expired
