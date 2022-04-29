@@ -6,7 +6,6 @@ A third party Weibo client for Android ( iOS may later )
 # Supported function list:
 - Login with user authorization in Android Weibo SDK and keep access_token
 - Load new weibo content
-- Display weibo-emoji (not all of them)
 - Material You color theming
 - Sync with weibo latest emoji and also GIF supported (2022-04-26) 
 - Request new access_token when it expired ✨ NEW
