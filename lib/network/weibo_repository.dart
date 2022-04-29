@@ -36,6 +36,9 @@ class WeiboRepository {
     } catch (e) {
       // any exception during requesting
       Logger.self.e("REQUEST_ERROR", e.toString());
+      if (e is DioError) {
+        Logger.self.e("REQUEST_ERROR_DETAIL", e.response?.data);
+      }
       final WeiboResponseType failureType = _getErrorResponseType(e);
       return WeiboResponse.failure(responseType: failureType);
     }
@@ -82,9 +85,21 @@ class WeiboRepository {
   /// param [lastSinceId] will load content of weibo which is newer than this.
   /// param [count] how many content item in a page, default is 20, range: [0, 100]
   /// return data: [Pair.first] -> since_id  [Pair.second] -> content list
-  Future<Result<Pair<String, List<Content>>>> getContentListOfFriends(String lastSinceId, { int count = 40 }) async {
+  Future<Result<Pair<String, List<Content>>>> getContentListOfFriends(
+      {
+        String sinceId = "0",
+        int count = 40,
+        String maxId = "0"
+      }) async {
     // send request
-    final WeiboResponse response = await _tryToGetJsonResponse(Urls.contentOfFriends, {Keys.keyRequestCount : count.toString()});
+    final WeiboResponse response = await _tryToGetJsonResponse(
+        Urls.contentOfFriends,
+        {
+          Keys.keySinceId : sinceId,
+          Keys.keyRequestCount : count.toString(),
+          Keys.keyRequestMaxId : maxId,
+        }
+    );
 
     // handle response
     final Result<Pair<String, List<Content>>> result = _getResult(response, (String json){
