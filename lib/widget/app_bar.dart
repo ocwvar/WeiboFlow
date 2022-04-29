@@ -13,20 +13,26 @@ class BlurAppBarFactory {
         child: SizedBox(
           width: double.infinity,
           height: double.infinity,
-          child: BlurBox(
-            blurValue: 13,
-            cornerRoundedValue: 0,
-            backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-            child: AppBar(
-                elevation: 0.0,
-                backgroundColor: Colors.transparent,
-                title: Text(title),
-                actions: actions,
-                leading: _createBackButton(context, hasBackButton),
-                systemOverlayStyle: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              BlurBox(
+                blurValue: 13,
+                cornerRoundedValue: 0,
+                backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                child: AppBar(
+                  elevation: 0.0,
+                  backgroundColor: Colors.transparent,
+                  title: Text(title),
+                  actions: actions,
+                  leading: _createBackButton(context, hasBackButton),
+                  systemOverlayStyle: const SystemUiOverlayStyle(
+                      statusBarColor: Colors.transparent
+                  ),
                 ),
-            ),
+              ),
+              const Divider(height: 1,thickness: 1,)
+            ],
           ),
         )
     );

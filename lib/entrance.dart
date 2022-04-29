@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weibo_flow/constants.dart';
+import 'package:weibo_flow/pages/home/view.dart';
 import 'package:weibo_flow/pages/welcome/view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:weibo_flow/theme_view_model.dart';
@@ -36,17 +38,14 @@ class AppEntrance extends StatelessWidget {
             themeMode: viewModel.themeMode,
             theme: viewModel.lightTheme,
             darkTheme: viewModel.darkTheme,
-            home: WelcomePage(themeViewModel: viewModel,),
+            initialRoute: PageUrl.welcome,
+            routes: {
+              PageUrl.welcome: (context) => WelcomePage(themeViewModel: viewModel,),
+              PageUrl.home: (context) => HomePage(themeViewModel: viewModel,),
+            },
           );
         },
       ),
     );
   }
 }
-/*
-SvgPicture.asset(
-                  "assets/bg/main_bg.svg",
-                  color: viewModel.getCurrentThemeData().colorScheme.primary.withOpacity(0.4),
-                  fit: BoxFit.contain,
-                )
- */

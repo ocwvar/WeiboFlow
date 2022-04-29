@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weibo_flow/base/keys.dart';
+import '../constants.dart';
 
 class ThemeViewModel extends ChangeNotifier {
 

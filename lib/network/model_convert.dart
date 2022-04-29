@@ -2,13 +2,13 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
-import 'package:weibo_flow/base/keys.dart';
 import 'package:weibo_flow/data_singleton.dart';
 import 'package:weibo_flow/model/picture.dart';
 import 'package:weibo_flow/model/user.dart';
 import 'package:weibo_flow/model/weibo_text.dart';
 
 import '../base/pair.dart';
+import '../constants.dart';
 import '../model/content.dart';
 import '../base/ext.dart';
 
@@ -170,6 +170,16 @@ class ModelConvert {
       }
     }
     return result;
+  }
+
+  /// convert to weibo error response pair
+  /// return Pair<error_code, error_message>
+  static Pair<int, String> toWeiboErrorResponse(String jsonString) {
+    final Map<String, dynamic> jsonObject = json.decoder.convert(jsonString);
+    return Pair(
+      jsonObject["error_code"],
+      jsonObject["error"]
+    );
   }
 
 }

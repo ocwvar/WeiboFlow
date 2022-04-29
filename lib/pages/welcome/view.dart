@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weibo_flow/pages/home/view.dart';
+import 'package:weibo_flow/constants.dart';
 import 'package:weibo_flow/pages/welcome/view_model.dart';
 import 'package:weibo_flow/widget/blur.dart';
 import 'package:weibo_flow/widget/page.dart';
@@ -110,14 +110,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   /// enter home page
   void _enterHomePage() {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HomePage(
-                themeViewModel: widget.themeViewModel
-            )
-        )
-    );
+    Navigator.of(context).pushReplacementNamed(PageUrl.home);
   }
 
 }

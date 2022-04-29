@@ -90,6 +90,16 @@ class S {
     );
   }
 
+  /// `Retry`
+  String get retry {
+    return Intl.message(
+      'Retry',
+      name: 'retry',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Retweeted Weibo`
   String get contentRetweetText {
     return Intl.message(
@@ -125,6 +135,46 @@ class S {
     return Intl.message(
       'Yesterday',
       name: 'contentYesterday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login again`
+  String get dialogButtonReLogin {
+    return Intl.message(
+      'Login again',
+      name: 'dialogButtonReLogin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Woops!`
+  String get dialogErrorTitle {
+    return Intl.message(
+      'Woops!',
+      name: 'dialogErrorTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Looks like we are having network issue. But don't worry lets try again!`
+  String get dialogErrorNormal {
+    return Intl.message(
+      'Looks like we are having network issue. But don\'t worry lets try again!',
+      name: 'dialogErrorNormal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your account access token seems expired. Please login again.`
+  String get dialogErrorTokenExpired {
+    return Intl.message(
+      'Your account access token seems expired. Please login again.',
+      name: 'dialogErrorTokenExpired',
       desc: '',
       args: [],
     );

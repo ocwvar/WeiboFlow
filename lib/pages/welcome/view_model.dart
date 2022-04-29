@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:weibo_flow/base/keys.dart';
 import 'package:weibo_flow/data_singleton.dart';
 
 import '../../base/base_view_model.dart';
 import '../../base/log.dart';
 import '../../base/native_bridge.dart';
+import '../../constants.dart';
 import '../../network/model_convert.dart';
 
 const String tag = "welcome_vm";
-class WelcomeViewModel extends BaseViewModel {
+class WelcomeViewModel extends BaseRequestViewModel {
 
   // the bridge to native level
   final NativeBridge _nativeBridge = NativeBridge();
@@ -30,6 +30,9 @@ class WelcomeViewModel extends BaseViewModel {
   bool get hasErrorOnLoadRes => _errorOnLoadRes;
   bool _errorOnLoadRes = false;
 
+  @override
+  void onRetryCalled(String tag) {
+  }
 
   /// init sdk and also user authorize if there
   /// was no token or token was expired
@@ -40,16 +43,21 @@ class WelcomeViewModel extends BaseViewModel {
     _initCalled = true;
     _nativeBridge.initSDK().then((_){
       // succeed, then we try to load sdk model from cache
-      _onRecoverSdkModel();
+      if (DataSingleton.self.isFirstStart || !DataSingleton.self.wasTokenExpired) {
+        _onRecoverSdkModel();
+      } else {
+        _onCheckSdkAuth();
+      }
     }).onError((_, __){
       _onSdkInitFailed();
     });
   }
 
   /// on check if we need to request new token from user
-  void _onCheckSdkTokens() {
+  /// Next step -> [_onLoadEmojiMapping]
+  void _onCheckSdkAuth() {
     Logger.self.d(tag, "_onCheckSdkTokens");
-    if (!super.isTokenValid()) {
+    if (!super.isCachedTokenValid()) {
       _nativeBridge.authSDK().then((String jsonString){
         Logger.self.d("welcome_vm", "got new sdk token model json: $jsonString");
         _onSdkAuthSucceed(jsonString);
@@ -64,7 +72,22 @@ class WelcomeViewModel extends BaseViewModel {
     _onLoadEmojiMapping();
   }
 
+  /// on recover sdk model from local cache
+  void _onRecoverSdkModel() {
+    Logger.self.d(tag, "_onRecoverSdkModel");
+    super.getLastStatusModelFromCache().then((SdkStatusModel? model){
+      if (model != null) {
+        DataSingleton.self.updateSdkModel(model);
+      }
+      _onCheckSdkAuth();
+    }).onError((_, __){
+      _onCheckSdkAuth();
+    });
+  }
+
   /// on load emoji mapping json
+  /// Final step.
+  /// succeed -> [_onEveryThingSucceed]
   void _onLoadEmojiMapping() {
     rootBundle.load("assets/json/emoji_20220426.json").then((ByteData value) {
       try {
@@ -105,19 +128,6 @@ class WelcomeViewModel extends BaseViewModel {
     _errorOnInit = false;
     _errorOnAuth = false;
     notifyListeners();
-  }
-
-  /// on recover sdk model from local cache
-  void _onRecoverSdkModel() {
-    Logger.self.d(tag, "_onRecoverSdkModel");
-    super.getLastStatusModelFromCache().then((SdkStatusModel? model){
-      if (model != null) {
-        DataSingleton.self.updateSdkModel(model);
-      }
-      _onCheckSdkTokens();
-    }).onError((_, __){
-      _onCheckSdkTokens();
-    });
   }
 
   /// on sdk auth failed
