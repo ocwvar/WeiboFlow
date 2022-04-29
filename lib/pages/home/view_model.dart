@@ -1,5 +1,4 @@
 import 'package:weibo_flow/base/base_view_model.dart';
-import 'package:weibo_flow/data_singleton.dart';
 import 'package:weibo_flow/model/content.dart';
 
 import '../../base/pair.dart';
@@ -28,17 +27,6 @@ class HomeViewModel extends BaseRequestViewModel {
             (result) {
               _lastSinceId = result.first;
               _contentList.insertAll(0, result.second);
-
-              DataSingleton.self.updateSdkModel(
-                SdkStatusModel(
-                    accessToken: "abc",
-                    refreshToken: DataSingleton.self.sdkModel.refreshToken,
-                    redirectUrl: DataSingleton.self.sdkModel.redirectUrl,
-                    expireTime: DataSingleton.self.sdkModel.expireTime,
-                    generateTime: DataSingleton.self.sdkModel.generateTime,
-                    uid: DataSingleton.self.sdkModel.uid
-                )
-              );
             }
     );
   }
