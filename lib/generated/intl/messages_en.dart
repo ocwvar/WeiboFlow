@@ -30,7 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dialogButtonReLogin":
             MessageLookupByLibrary.simpleMessage("Login again"),
         "dialogErrorNormal": MessageLookupByLibrary.simpleMessage(
-            "Looks like we are having a network issue. But don\'t worry lets try again!"),
+            "Looks like we are having network issue. But don\'t worry lets try again!"),
         "dialogErrorTitle": MessageLookupByLibrary.simpleMessage("Woops!"),
         "dialogErrorTokenExpired": MessageLookupByLibrary.simpleMessage(
             "Your account access token seems expired. Please login again."),

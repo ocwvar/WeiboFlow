@@ -50,19 +50,18 @@ class ThemedDialogContent extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.background.withOpacity(0.5),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     width: double.infinity,
                     child: ColoredBox(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                      color: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.4),
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        // dialog title
+                        padding: const EdgeInsets.all(15),
                         child: Text(
                           title,
-                          textAlign: TextAlign.center,
-                          style: _titleTextStyle(context),),
+                          style: _titleTextStyle(context),
+                        ),
                       ),
                     ),
                   ),
@@ -72,10 +71,14 @@ class ThemedDialogContent extends StatelessWidget {
                     // dialog message content
                     child: Text(message, style: Theme.of(context).textTheme.bodyMedium,),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    // action buttons
-                    children: actions,
+                  const SizedBox(height: 20,),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      // action buttons
+                      children: actions,
+                    ),
                   )
                 ],
               )
@@ -86,7 +89,9 @@ class ThemedDialogContent extends StatelessWidget {
   }
 
   TextStyle? _titleTextStyle(BuildContext context) {
-    return Theme.of(context).textTheme.titleLarge
-        ?.copyWith(color: Theme.of(context).colorScheme.background);
+    return Theme.of(context).textTheme.headline3?.copyWith(
+      color: Theme.of(context).colorScheme.secondary,
+      fontWeight: FontWeight.w100,
+    );
   }
 }

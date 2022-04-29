@@ -160,10 +160,10 @@ class S {
     );
   }
 
-  /// `Looks like we are having a network issue. But don't worry lets try again!`
+  /// `Looks like we are having network issue. But don't worry lets try again!`
   String get dialogErrorNormal {
     return Intl.message(
-      'Looks like we are having a network issue. But don\'t worry lets try again!',
+      'Looks like we are having network issue. But don\'t worry lets try again!',
       name: 'dialogErrorNormal',
       desc: '',
       args: [],
