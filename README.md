@@ -8,11 +8,11 @@ A third party Weibo client for Android ( iOS may later )
 - Load new weibo content
 - Display weibo-emoji (not all of them)
 - Material You color theming
-- Sync with weibo latest emoji and also GIF supported (2022-04-26) ✨ NEW
+- Sync with weibo latest emoji and also GIF supported (2022-04-26) 
+- Request new access_token when it expired ✨ NEW
 
 # TODO list:
-- Request new access_token when it expired 🚧 WIP
-- Load old weibo content
+- Load old weibo content 🚧 WIP
 - Friend list page
 - Add new friend
 - User detail dialog
