@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:weibo_flow/base/base_view_model.dart';
 import 'package:weibo_flow/base/dialog.dart';
 import 'package:weibo_flow/constants.dart';
-import 'package:weibo_flow/pages/welcome/view.dart';
-import 'package:weibo_flow/theme_view_model.dart';
 
 import '../generated/l10n.dart';
 
@@ -12,15 +10,18 @@ import '../generated/l10n.dart';
 /// should use inside [Consumer.builder] as child
 class ResponseStatusContainer extends StatelessWidget {
 
-  final ThemeViewModel themeViewModel;
   final BaseRequestViewModel baseRequestViewModel;
   final Widget child;
 
+  final Function()? onPressedRetry;
+  final Function()? onPressedReLogin;
+
   const ResponseStatusContainer({
     Key? key,
-    required this.themeViewModel,
     required this.baseRequestViewModel,
-    required this.child
+    required this.child,
+    this.onPressedRetry,
+    this.onPressedReLogin
   }) : super(key: key);
 
   @override
@@ -44,23 +45,6 @@ class ResponseStatusContainer extends StatelessWidget {
     return child;
   }
 
-  /// callback on user clicked "Retry" button on dialog
-  void _onPressedRetryButton() {
-    baseRequestViewModel.onRetryCalled("");
-  }
-
-  /// callback on user clicked Login again button on dialog
-  void _onPressedReLoginButton(BuildContext context) {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => WelcomePage(
-              themeViewModel: themeViewModel,
-            )
-        )
-    );
-  }
-
   /// display normal or unknown error dialog
   void _displayNormalError(BuildContext context, bool cancelable) {
     showDialog(
@@ -76,7 +60,7 @@ class ResponseStatusContainer extends StatelessWidget {
                 actions: [
                   ThemedDialogActions(
                       onPressed: (){
-                        _onPressedRetryButton();
+                        onPressedRetry?.call();
                         Navigator.pop(dialogContext);
                       },
                       text: S.of(context).retry
@@ -102,8 +86,8 @@ class ResponseStatusContainer extends StatelessWidget {
                 actions: [
                   ThemedDialogActions(
                     onPressed: (){
-                      _onPressedReLoginButton(context);
                       Navigator.pop(dialogContext);
+                      onPressedReLogin?.call();
                     },
                     text: S.of(context).dialogButtonReLogin,
                   ),

@@ -15,6 +15,10 @@ class WeiboRepository {
   /// handled all exception in this function and return [WeiboResponse] as result
   Future<WeiboResponse> _tryToGetJsonResponse(String url, Map<String, String> queryParameters) async {
     try {
+      // add access token
+      queryParameters[Keys.keyRequestTokenAccess] = DataSingleton.self.sdkModel.accessToken;
+
+      // begin request
       final Response<String> response = await DataSingleton.self.client.get<String>(
           url,
           queryParameters: queryParameters,
@@ -49,6 +53,7 @@ class WeiboRepository {
         switch (error.first) {
           case 21332: // access token invalid
           case 21327: // access token expired
+            DataSingleton.self.markTokenExpired();
             return WeiboResponseType.tokenInvalid;
         }
 

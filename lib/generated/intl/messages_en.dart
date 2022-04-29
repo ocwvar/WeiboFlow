@@ -33,7 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Looks like we are having a network issue. But don\'t worry lets try again!"),
         "dialogErrorTitle": MessageLookupByLibrary.simpleMessage("Woops!"),
         "dialogErrorTokenExpired": MessageLookupByLibrary.simpleMessage(
-            "Your account access token seems expired and can not be refresh. Please login again."),
+            "Your account access token seems expired. Please login again."),
         "homeTitle": MessageLookupByLibrary.simpleMessage("Weibo@Flow"),
         "retry": MessageLookupByLibrary.simpleMessage("Retry"),
         "welcomeStatusErrorOnAuth":

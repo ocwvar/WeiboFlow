@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:weibo_flow/base/log.dart';
 
-import '../constants.dart';
-
 class DataSingleton {
   static final DataSingleton self = DataSingleton._internal();
   DataSingleton._internal();
@@ -24,6 +22,10 @@ class DataSingleton {
   Dio get client => _client;
   late Dio _client;
 
+  /// is first start
+  bool get isFirstStart => isFirstTimeStartup();
+  bool _isFirstStartFlag = true;
+
   /// weibo-emoji mapping
   /// Map<name, url>
   final Map<String, String> _emojiMapping = {};
@@ -40,15 +42,23 @@ class DataSingleton {
     _wasTokenExpired = true;
   }
 
+  /// check if first time startup
+  /// once called this function, will be false next time
+  bool isFirstTimeStartup() {
+    if (_isFirstStartFlag) {
+      _isFirstStartFlag = false;
+      return true;
+    }
+
+    return false;
+  }
+
   /// init dio network request client
   void initRequestClient() {
     _client = Dio(BaseOptions(
       receiveTimeout: 5000,
       sendTimeout: 5000,
-      connectTimeout: 5000,
-      queryParameters: {
-        Keys.keyRequestTokenAccess: sdkModel.accessToken
-      }
+      connectTimeout: 5000
     ));
   }
 

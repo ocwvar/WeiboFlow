@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weibo_flow/constants.dart';
 import 'package:weibo_flow/generated/l10n.dart';
 import 'package:weibo_flow/pages/home/view_model.dart';
 import 'package:weibo_flow/widget/content.dart';
@@ -9,6 +10,7 @@ import 'package:weibo_flow/widget/response_status_container.dart';
 import '../../theme_view_model.dart';
 import '../../widget/app_bar.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
 
   final ThemeViewModel themeViewModel;
@@ -43,29 +45,12 @@ class _HomePageState extends State<HomePage> {
           child: Consumer<HomeViewModel>(
             builder: (context, viewModel, child) {
               return ResponseStatusContainer(
-                  themeViewModel: widget.themeViewModel,
                   baseRequestViewModel: viewModel,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      RefreshIndicator(
-                        edgeOffset: 10.0,
-                        displacement: appBarHeight + 30,
-                        onRefresh: () {
-                          viewModel.requestMoreNewContent();
-                          return viewModel.waitUntilLoadingFinished();
-                        },
-                        child: ListView.separated(
-                            physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return WeiboContent(content: viewModel.contentList[index]);
-                            },
-                            separatorBuilder: (context, index) => const SizedBox(height: 0,),
-                            itemCount: viewModel.contentList.length
-                        ),
-                      ),
-                    ],
-                  )
+                  onPressedRetry: () => viewModel.onRetryCalled(""),
+                  onPressedReLogin: () {
+                    Navigator.of(this.context).pushReplacementNamed(PageUrl.welcome);
+                  },
+                  child: _getContentList(context, viewModel)
               );
             },
           ),
@@ -73,6 +58,27 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// get content view
+  Widget _getContentList(BuildContext context, HomeViewModel viewModel) {
+    return RefreshIndicator(
+      edgeOffset: 10.0,
+      displacement: appBarHeight + 30,
+      onRefresh: () {
+        viewModel.requestMoreNewContent();
+        return viewModel.waitUntilLoadingFinished();
+      },
+      child: ListView.separated(
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (context, index) {
+            return WeiboContent(content: viewModel.contentList[index]);
+          },
+          separatorBuilder: (context, index) => const SizedBox(height: 0,),
+          itemCount: viewModel.contentList.length
+      ),
+    );
+  }
+
+  /// get app bar
   PreferredSize _getAppBar(BuildContext context) {
     return BlurAppBarFactory().get(
         S().homeTitle,

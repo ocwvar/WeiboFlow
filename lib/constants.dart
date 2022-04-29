@@ -1,7 +1,3 @@
-class Constants {
-
-}
-
 class Keys {
   static const String channel = "native_code_weibo_auth_api";
   static const String methodInitSDK = "METHOD_INIT_SDK";
@@ -33,4 +29,9 @@ class ErrorCodes {
   static const int errorTokenInvalid = 300;
   static const int errorNetwork = 301;
   static const int errorUnknown = 200;
+}
+
+class PageUrl {
+  static const String welcome = "/Welcome";
+  static const String home = "/Home";
 }

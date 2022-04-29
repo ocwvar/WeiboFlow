@@ -170,10 +170,10 @@ class S {
     );
   }
 
-  /// `Your account access token seems expired and can not be refresh. Please login again.`
+  /// `Your account access token seems expired. Please login again.`
   String get dialogErrorTokenExpired {
     return Intl.message(
-      'Your account access token seems expired and can not be refresh. Please login again.',
+      'Your account access token seems expired. Please login again.',
       name: 'dialogErrorTokenExpired',
       desc: '',
       args: [],

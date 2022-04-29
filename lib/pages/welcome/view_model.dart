@@ -43,7 +43,11 @@ class WelcomeViewModel extends BaseRequestViewModel {
     _initCalled = true;
     _nativeBridge.initSDK().then((_){
       // succeed, then we try to load sdk model from cache
-      _onRecoverSdkModel();
+      if (DataSingleton.self.isFirstStart || !DataSingleton.self.wasTokenExpired) {
+        _onRecoverSdkModel();
+      } else {
+        _onCheckSdkAuth();
+      }
     }).onError((_, __){
       _onSdkInitFailed();
     });
@@ -51,7 +55,7 @@ class WelcomeViewModel extends BaseRequestViewModel {
 
   /// on check if we need to request new token from user
   /// Next step -> [_onLoadEmojiMapping]
-  void _onCheckSdkTokens() {
+  void _onCheckSdkAuth() {
     Logger.self.d(tag, "_onCheckSdkTokens");
     if (!super.isCachedTokenValid()) {
       _nativeBridge.authSDK().then((String jsonString){
@@ -66,6 +70,19 @@ class WelcomeViewModel extends BaseRequestViewModel {
 
     // our token still valid, go to next step
     _onLoadEmojiMapping();
+  }
+
+  /// on recover sdk model from local cache
+  void _onRecoverSdkModel() {
+    Logger.self.d(tag, "_onRecoverSdkModel");
+    super.getLastStatusModelFromCache().then((SdkStatusModel? model){
+      if (model != null) {
+        DataSingleton.self.updateSdkModel(model);
+      }
+      _onCheckSdkAuth();
+    }).onError((_, __){
+      _onCheckSdkAuth();
+    });
   }
 
   /// on load emoji mapping json
@@ -111,19 +128,6 @@ class WelcomeViewModel extends BaseRequestViewModel {
     _errorOnInit = false;
     _errorOnAuth = false;
     notifyListeners();
-  }
-
-  /// on recover sdk model from local cache
-  void _onRecoverSdkModel() {
-    Logger.self.d(tag, "_onRecoverSdkModel");
-    super.getLastStatusModelFromCache().then((SdkStatusModel? model){
-      if (model != null) {
-        DataSingleton.self.updateSdkModel(model);
-      }
-      _onCheckSdkTokens();
-    }).onError((_, __){
-      _onCheckSdkTokens();
-    });
   }
 
   /// on sdk auth failed
