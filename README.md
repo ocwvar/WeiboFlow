@@ -12,6 +12,7 @@ A third party Weibo client for Android ( iOS may later )
 
 # TODO list:
 - Load old weibo content 🚧 WIP
+- Support looooonnng text content
 - Friend list page
 - Add new friend
 - User detail dialog
