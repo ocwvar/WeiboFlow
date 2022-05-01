@@ -1,3 +1,7 @@
+class Constant {
+  static const int fetchOldContentThreshold = 15;
+}
+
 class Keys {
   static const String channel = "native_code_weibo_auth_api";
   static const String methodInitSDK = "METHOD_INIT_SDK";
@@ -7,6 +11,8 @@ class Keys {
   static const String prefixDateYesterday = "3#";
   static const String keyRequestTokenAccess = "access_token";
   static const String keyRequestCount = "count";
+  static const String keySinceId = "since_id";
+  static const String keyRequestMaxId = "max_id";
   static const String keyStringTokenAccess = "KEY_STRING_TOKEN_ACCESS";
   static const String keyStringTokenRefresh = "KEY_STRING_TOKEN_REFRESH";
   static const String keyStringTokenUid = "KEY_STRING_UID";

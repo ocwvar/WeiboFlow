@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (widget.isFirstEnter) {
         widget.isFirstEnter = false;
-        viewModel.requestMoreNewContent();
+        viewModel.loadNewContent();
       }
     });
 
@@ -58,18 +58,33 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _shouldFetchOldContent(HomeViewModel viewModel, int index) {
+    if (index < viewModel.contentList.length - Constant.fetchOldContentThreshold) {
+      return;
+    }
+
+    // we should begin to load old content
+    // if user looking at last [Constant.fetchOldContentThreshold] items
+    if (!viewModel.isLoading) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        viewModel.loadOldContent();
+      });
+    }
+  }
+
   /// get content view
   Widget _getContentList(BuildContext context, HomeViewModel viewModel) {
     return RefreshIndicator(
       edgeOffset: 10.0,
       displacement: appBarHeight + 30,
       onRefresh: () {
-        viewModel.requestMoreNewContent();
+        viewModel.loadNewContent();
         return viewModel.waitUntilLoadingFinished();
       },
       child: ListView.separated(
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
+            _shouldFetchOldContent(viewModel, index);
             return WeiboContent(content: viewModel.contentList[index]);
           },
           separatorBuilder: (context, index) => const SizedBox(height: 0,),
