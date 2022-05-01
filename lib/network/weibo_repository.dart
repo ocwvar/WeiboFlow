@@ -14,6 +14,7 @@ class WeiboRepository {
   /// try to get json response from weibo backend
   /// handled all exception in this function and return [WeiboResponse] as result
   Future<WeiboResponse> _tryToGetJsonResponse(String url, Map<String, String> queryParameters) async {
+    Logger.self.d("REQUEST", "begin to request ---> $url");
     try {
       // add access token
       queryParameters[Keys.keyRequestTokenAccess] = DataSingleton.self.sdkModel.accessToken;

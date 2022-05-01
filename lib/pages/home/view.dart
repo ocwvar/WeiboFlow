@@ -65,9 +65,11 @@ class _HomePageState extends State<HomePage> {
 
     // we should begin to load old content
     // if user looking at last [Constant.fetchOldContentThreshold] items
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      viewModel.loadOldContent();
-    });
+    if (!viewModel.isLoading) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        viewModel.loadOldContent();
+      });
+    }
   }
 
   /// get content view
