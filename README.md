@@ -12,8 +12,8 @@ A third party Weibo client for Android ( iOS may later )
 - Load old weibo content ✨ NEW
 
 # TODO list:
-- Support looooonnng text content  🚧 WIP
-- Friend list page
+- Support looooonnng text content  ⛔️ ON HOLD -- API **statuses/show.json** return permission denied, need to ask what is happening
+- Friend list page  🚧 WIP
 - Add new friend
 - User detail dialog
 - Picture display page
